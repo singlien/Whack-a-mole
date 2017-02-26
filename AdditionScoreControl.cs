@@ -34,22 +34,21 @@ public class AdditionScoreControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//遊戲進行中不斷Update目前數字
-		currentDisplay.text = "Now: " + currentPoint;
+		currentDisplay.text = "Now: " + ScoreScript.CurrentPoint;
 
-		if (targetPoint == currentPoint) {	//目標點數=現在點數，得分！
+		if (targetPoint == ScoreScript.CurrentPoint) {	//目標點數=現在點數，得分！
 
 			//得分
 			ScoreScript.Score += 10;
-
-			currentPoint = 0;
+			ScoreScript.CurrentPoint = 0;
 		}
 		//驗證是否超過目標數
-		if (currentPoint != 0 && (targetPoint < currentPoint) ) {	//不為0 且 爆掉了
+		if (ScoreScript.CurrentPoint != 0 && (targetPoint < ScoreScript.CurrentPoint) ) {	//不為0 且 爆掉了
 			resetTarget (isBannedFunctionOn);
 		}
 		//驗證是否採到禁止數
 		if (isBannedFunctionOn) {//禁數模式開啟
-			if (isBanned(currentPoint,bannedMode) ) { //踩到禁數 
+			if (isBanned(ScoreScript.CurrentPoint,bannedMode) ) { //踩到禁數 
 				resetTarget (isBannedFunctionOn);
 			}
 		}
@@ -61,7 +60,7 @@ public class AdditionScoreControl : MonoBehaviour {
 		int bannedNum;
 
 		//現在數歸0
-		currentPoint = 0;
+		ScoreScript.CurrentPoint = 0;
 
 		//判斷禁止模式是否開啟，產生禁止數及目標數
 		if (isBannedOn) {//-->禁止數模式開啟

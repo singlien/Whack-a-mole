@@ -3,8 +3,18 @@ using System.Collections;
 
 public class ScoreScript : MonoBehaviour
 {
-	static private tk2dTextMesh textMesh;
+	static private tk2dTextMesh scoreText;
 	static private int score;
+	static private int currentPoint;
+
+	static public int CurrentPoint {
+		get {
+			return currentPoint;
+		}
+		set {
+			currentPoint = value;
+		}
+	}
 
 	static public int Score
 	{
@@ -24,13 +34,16 @@ public class ScoreScript : MonoBehaviour
 	void Start ()
 	{
 		score = 0;
-		textMesh = GetComponent<tk2dTextMesh>();
+		currentPoint = 0;
+		scoreText = gameObject.GetComponent<tk2dTextMesh> ();
+
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		textMesh.text = string.Format("Score: {0}", score);
-		textMesh.Commit();
+		scoreText.text = string.Format("Score: {0}", score);
+		scoreText.Commit();
+		Debug.Log ("Score:" + score + ", now:" + currentPoint);
 	}
 }

@@ -7,6 +7,7 @@ public class MoleScript : MonoBehaviour
 	public tk2dTextMesh numberText;
 //	public AudioClip moleUp;
 //	public AudioClip moleDown;
+	public Vector2 pointMinMax = new Vector2 (1f,9f);
 	
 	private float height;
 	private float speed;
@@ -14,7 +15,7 @@ public class MoleScript : MonoBehaviour
 	private Rect spriteRec;
 	private bool isWhacked;				//is hit?
 	private float transformY;
-	private string molePoint = "T"; 	//point on mole body
+	private int molePoint = 0; 	//point on mole body
 
 
 	
@@ -36,6 +37,10 @@ public class MoleScript : MonoBehaviour
 		isWhacked = false;
 		sprite.SetSprite("Mole_Normal");
 		timeLimit = tl;
+		//Set points on mole
+		molePoint = (int)Random.Range (pointMinMax.x, pointMinMax.y);
+
+		//Start the animation
 		StartCoroutine (MainLoop());
 	}
 
@@ -96,7 +101,7 @@ public class MoleScript : MonoBehaviour
 		}
 
 		print ("Topped");
-		numberText.text = molePoint;
+		numberText.text = molePoint.ToString ();
 
 	}
 	
@@ -151,12 +156,9 @@ public class MoleScript : MonoBehaviour
 		}
 	}
 
-	public string MolePoint {
+	public int MolePoint {
 		get {
 			return molePoint;
-		}
-		set {
-			molePoint = value;
 		}
 	}
 }

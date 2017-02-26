@@ -7,7 +7,7 @@ public class MainGameScript : MonoBehaviour
 	private List<MoleScript> moles = new List<MoleScript>();
 	private bool gameEnd;
 
-	public float hitTimeLimit = 1f;
+	public float hitTimeLimit = 5f;
 	public Vector2 TimeWaitBeforeInstaniate = new Vector2 (5f, 1000f);
 	public int moleLimit = 5;
 	public Camera gameCam;
@@ -40,13 +40,16 @@ public class MainGameScript : MonoBehaviour
 	IEnumerator Start () 
 	{
 		gameEnd = false;
-		hitTimeLimit = 1f;
 
-		if (moleLimit > moles.Count)
+		if (moleLimit > moles.Count) {
+			Debug.LogWarning ("Change moleLimit to maximum holes");
 			moleLimit = moles.Count;
-		if (hitTimeLimit < 1f)
-			hitTimeLimit = 1f;
+		}
 		
+		if (hitTimeLimit < 1f) {
+			Debug.LogWarning ("Change hit time to 1s");
+			hitTimeLimit = 1f;
+		}
 		// Yield here to give everything else a chance to be set up before we start our main game loop
 		
 		yield return 0;  // wait for the next frame!
@@ -70,7 +73,7 @@ public class MainGameScript : MonoBehaviour
 					if(mole.sprite.gameObject.activeSelf && mole.ColliderTransform == hit.transform)
 					{
 						AudioSource.PlayClipAtPoint(moleHit, new Vector3());
-//						ScoreScript.Score += mole.Whacked ? 0 : 10;
+						ScoreScript.CurrentPoint += mole.MolePoint;
 						mole.Whack();
 						StartCoroutine(CallAnim(mole));
 					}
@@ -85,8 +88,7 @@ public class MainGameScript : MonoBehaviour
 			print ("Gameover");
 			gameEnd = true;
 		} else {
-			print (timeLeft + "seconds left");
-			timeDisplay.text = "Time Left:"+timeLeft+"s";
+			timeDisplay.text = "Time Left:"+(int)timeLeft+"s";
 		}
 
 
