@@ -18,7 +18,8 @@ public class ScoreScript : MonoBehaviour
 			score = value;	
 		}
 	}
-	
+
+
 	// Use this for initialization
 	void Start ()
 	{

@@ -4,6 +4,7 @@ using System.Collections;
 public class MoleScript : MonoBehaviour 
 {
 	public tk2dClippedSprite sprite;
+	public tk2dTextMesh numberText;
 //	public AudioClip moleUp;
 //	public AudioClip moleDown;
 	
@@ -11,8 +12,11 @@ public class MoleScript : MonoBehaviour
 	private float speed;
 	private float timeLimit;
 	private Rect spriteRec;
-	private bool whacked;
+	private bool isWhacked;				//is hit?
 	private float transformY;
+	private string molePoint = "T"; 	//point on mole body
+
+
 	
 	private Transform colliderTransform;
 
@@ -29,7 +33,7 @@ public class MoleScript : MonoBehaviour
 	public void Trigger(float tl)
 	{
 		sprite.gameObject.SetActive (true);
-		whacked = false;
+		isWhacked = false;
 		sprite.SetSprite("Mole_Normal");
 		timeLimit = tl;
 		StartCoroutine (MainLoop());
@@ -58,6 +62,7 @@ public class MoleScript : MonoBehaviour
 		sprite.transform.localPosition = localPos;
 		
 		sprite.gameObject.SetActive (false);
+		numberText.text = "";
 		
 		// Add mole to the main game script's mole container
 		MainGameScript.Instance.RegisterMole(this);
@@ -89,6 +94,10 @@ public class MoleScript : MonoBehaviour
 			
 			yield return null;
 		}
+
+		print ("Topped");
+		numberText.text = molePoint;
+
 	}
 	
 	// Give the player a chance to hit the mole.
@@ -96,7 +105,7 @@ public class MoleScript : MonoBehaviour
 	{
 		float time = 0.0f;
 		
-		while(!whacked && time < timeLimit)
+		while(!isWhacked && time < timeLimit)
 		{
 			time += Time.deltaTime;
 			yield return null;
@@ -106,6 +115,9 @@ public class MoleScript : MonoBehaviour
 	// Same as the MoveUp function but the other way around!	
 	private IEnumerator MoveDown()
 	{		
+		print ("Going Down");
+		numberText.text = "";
+
 		while(spriteRec.y < 1.0f)
 		{ 
 			spriteRec = sprite.ClipRect;
@@ -127,15 +139,24 @@ public class MoleScript : MonoBehaviour
 	// Mole has been hit
 	public void Whack()
 	{
-		whacked = true;
+		isWhacked = true;
 		sprite.SetSprite("Mole_Hit");
 	}
-	
+		
 	public bool Whacked
 	{
 		get
 		{
-			return whacked;	
+			return isWhacked;	
+		}
+	}
+
+	public string MolePoint {
+		get {
+			return molePoint;
+		}
+		set {
+			molePoint = value;
 		}
 	}
 }

@@ -6,14 +6,15 @@ public class MainGameScript : MonoBehaviour
 {	
 	private List<MoleScript> moles = new List<MoleScript>();
 	private bool gameEnd;
-	private int score;
-	private int timeLimitMS;
-	private int moleLimit;
-	
+
+	public float hitTimeLimit = 1f;
+	public Vector2 TimeWaitBeforeInstaniate = new Vector2 (5f, 1000f);
+	public int moleLimit = 5;
 	public Camera gameCam;
 	public tk2dSpriteAnimator dustAnimator;
 	public AudioClip moleHit;
-	public int moleNum;
+	public int gameTime = 300;
+	public tk2dTextMesh timeDisplay;
 
 	// Treat this class as a singleton.  This will hold the instance of the class.
 	private static MainGameScript instance;
@@ -39,9 +40,12 @@ public class MainGameScript : MonoBehaviour
 	IEnumerator Start () 
 	{
 		gameEnd = false;
-		timeLimitMS = 3000;
-		score = 0;
-		moleLimit = moleNum;
+		hitTimeLimit = 1f;
+
+		if (moleLimit > moles.Count)
+			moleLimit = moles.Count;
+		if (hitTimeLimit < 1f)
+			hitTimeLimit = 1f;
 		
 		// Yield here to give everything else a chance to be set up before we start our main game loop
 		
@@ -66,24 +70,36 @@ public class MainGameScript : MonoBehaviour
 					if(mole.sprite.gameObject.activeSelf && mole.ColliderTransform == hit.transform)
 					{
 						AudioSource.PlayClipAtPoint(moleHit, new Vector3());
-						ScoreScript.Score += mole.Whacked ? 0 : 10;
+//						ScoreScript.Score += mole.Whacked ? 0 : 10;
 						mole.Whack();
 						StartCoroutine(CallAnim(mole));
 					}
 				}
 			}
 		}
+
+
+		//Control game time
+		float timeLeft = DownCounter();
+		if (timeLeft <= 0) {
+			print ("Gameover");
+			gameEnd = true;
+		} else {
+			print (timeLeft + "seconds left");
+			timeDisplay.text = "Time Left:"+timeLeft+"s";
+		}
+
+
 	}
 	
 	private IEnumerator MainGameLoop()
 	{
-		float hitTimeLimit = 1.0f;
 		int randomMole;
 		
 		while(!gameEnd)
 		{
 			yield return StartCoroutine(OkToTrigger());
-			yield return new WaitForSeconds((float)Random.Range(1, timeLimitMS) / 1000.0f);
+			yield return new WaitForSeconds((float)Random.Range((int)TimeWaitBeforeInstaniate.x, (int)TimeWaitBeforeInstaniate.y) / 1000.0f);
 			
 			// Check if there are any free moles to choose from
 			int availableMoles = 0;
@@ -101,7 +117,7 @@ public class MainGameScript : MonoBehaviour
 				}
 					
 				moles[ randomMole ].Trigger(hitTimeLimit);
-				hitTimeLimit -= hitTimeLimit <= 0.0f ? 0.0f : 0.01f;	// Less time to hit the next mole
+//				hitTimeLimit -= hitTimeLimit <= 0.0f ? 0.0f : 0.01f;	// Less time to hit the next mole
 			}
 						
 			yield return null;
@@ -149,4 +165,11 @@ public class MainGameScript : MonoBehaviour
 		
 		Destroy(newAnimator.gameObject);
 	}
+
+
+	private float DownCounter(){
+
+		return gameTime - Time.timeSinceLevelLoad;
+	}
+
 }
