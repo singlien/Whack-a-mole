@@ -6,6 +6,8 @@ public class AdditionScoreControl : MonoBehaviour {
 	public tk2dTextMesh bannedDisplay;
 	public tk2dTextMesh targetDisplay;
 	public tk2dTextMesh currentDisplay;
+	public tk2dTextMesh scoreText;
+
 	public bool bannedMode;
 
 	public Vector2 targetMinMax = new Vector2 (50f, 100f);
@@ -19,7 +21,7 @@ public class AdditionScoreControl : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 	
 		bannedDisplay.text = "";
 
@@ -34,7 +36,9 @@ public class AdditionScoreControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//遊戲進行中不斷Update目前數字
-		currentDisplay.text = "Now: " + ScoreScript.CurrentPoint;
+		currentDisplay.text = string.Format("Now: {0}" , ScoreScript.CurrentPoint);
+		scoreText.text = string.Format("Score: {0}", ScoreScript.Score);
+		scoreText.Commit();
 
 		if (targetPoint == ScoreScript.CurrentPoint) {	//目標點數=現在點數，得分！
 
