@@ -6,7 +6,7 @@ public class SubstractionScoreControl : MonoBehaviour {
 	public tk2dTextMesh bannedDisplay;
 	public tk2dTextMesh targetDisplay;
 	public tk2dTextMesh currentDisplay;
-	public tk2dTextMesh scoreText;
+	public tk2dTextMesh scoreDisplay;
 
 	public bool bannedMode;	//禁止數模式選擇 true:每一位禁止 false:尾數禁止
 
@@ -41,13 +41,13 @@ public class SubstractionScoreControl : MonoBehaviour {
 		
 		//遊戲進行中不斷Update目前數字
 		currentDisplay.text = string.Format("Now: {0}" , ScoreScript.CurrentPoint);
-		scoreText.text = string.Format("Score: {0}", ScoreScript.Score);
-		scoreText.Commit();
+		scoreDisplay.text = string.Format("Score: {0}", ScoreScript.Score);
+		scoreDisplay.Commit();
 
 		//驗證得分
 		if (targetPoint == ScoreScript.CurrentPoint) {	//目標點數=現在點數，得分！
 
-
+			//得分
 			ScoreScript.Score += 10;
 			ScoreScript.CurrentPoint = 0;
 			resetTarget (isBannedFunctionOn);

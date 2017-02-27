@@ -6,7 +6,7 @@ public class AdditionScoreControl : MonoBehaviour {
 	public tk2dTextMesh bannedDisplay;
 	public tk2dTextMesh targetDisplay;
 	public tk2dTextMesh currentDisplay;
-	public tk2dTextMesh scoreText;
+	public tk2dTextMesh scoreDisplay;
 
 	public bool bannedMode;	//禁止數模式選擇 true:每一位禁止 false:尾數禁止
 
@@ -39,8 +39,8 @@ public class AdditionScoreControl : MonoBehaviour {
 		
 		//遊戲進行中不斷Update目前數字
 		currentDisplay.text = string.Format("Now: {0}" , ScoreScript.CurrentPoint);
-		scoreText.text = string.Format("Score: {0}", ScoreScript.Score);
-		scoreText.Commit();
+		scoreDisplay.text = string.Format("Score: {0}", ScoreScript.Score);
+		scoreDisplay.Commit();
 
 		if (targetPoint == ScoreScript.CurrentPoint) {	//目標點數=現在點數，得分！
 
