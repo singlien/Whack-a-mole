@@ -100,7 +100,7 @@ public class MoleScript : MonoBehaviour
 			yield return null;
 		}
 
-		print ("Topped");
+		//顯示mole身上的東西
 		numberText.text = molePoint.ToString ();
 
 	}
@@ -120,7 +120,7 @@ public class MoleScript : MonoBehaviour
 	// Same as the MoveUp function but the other way around!	
 	private IEnumerator MoveDown()
 	{		
-		print ("Going Down");
+		//先讓mole身上的數字消失，然後再下降
 		numberText.text = "";
 
 		while(spriteRec.y < 1.0f)

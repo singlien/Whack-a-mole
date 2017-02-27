@@ -40,7 +40,6 @@ public class ScoreScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		
-		Debug.Log ("Score:" + score + ", now:" + currentPoint);
+//		Debug.Log ("Score:" + score + ", now:" + currentPoint);
 	}
 }

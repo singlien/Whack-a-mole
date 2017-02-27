@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AdditionScoreControl : MonoBehaviour {
+public class SubstractionScoreControl : MonoBehaviour {
 
 	public tk2dTextMesh bannedDisplay;
 	public tk2dTextMesh targetDisplay;
 	public tk2dTextMesh currentDisplay;
 	public tk2dTextMesh scoreText;
 
-	public bool bannedMode;
+	public bool bannedMode;					//選擇禁止數模式，true="任意數禁含"，false="尾數禁止“
 
 	public Vector2 targetMinMax = new Vector2 (50f, 100f);
 	public Vector2 bannedMinMax = new Vector2 (50f, 100f);
 
-	private bool isBannedFunctionOn = false;
+	public bool isBannedFunctionOn = true;	//控制是否開啟禁止數功能
+
 	private int targetPoint;
 	private int currentPoint;
 	private char[] bannedArray;
@@ -21,18 +22,19 @@ public class AdditionScoreControl : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Awake () {
-	
+	void Start () {
+
 		bannedDisplay.text = "";
 
 		//重設點數目標及禁數
+		Debug.LogWarning("Ban?="+isBannedFunctionOn);
 		resetTarget(isBannedFunctionOn);
 
 		//讓遊戲分數歸零
 		ScoreScript.Score = 0;
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		//遊戲進行中不斷Update目前數字
@@ -60,7 +62,7 @@ public class AdditionScoreControl : MonoBehaviour {
 
 	void resetTarget(bool isBannedOn)
 	{
-		
+
 		int bannedNum;
 
 		//現在數歸0
@@ -68,6 +70,7 @@ public class AdditionScoreControl : MonoBehaviour {
 
 		//判斷禁止模式是否開啟，產生禁止數及目標數
 		if (isBannedOn) {//-->禁止數模式開啟
+			Debug.LogWarning("禁止數模式開啟");
 
 			//隨機產生一個禁止數
 			do {
@@ -83,9 +86,9 @@ public class AdditionScoreControl : MonoBehaviour {
 				targetPoint = (int)Random.Range (targetMinMax.x, targetMinMax.y);
 			} while(isBanned (targetPoint, bannedMode)); //驗證目標數不能被禁止，不符合則重新產生
 
-		//讓禁止數顯示在UI上
+			//讓禁止數顯示在UI上
 			if (!bannedMode) {
-				bannedDisplay.text = "尾數禁止: ";
+				bannedDisplay.text = "Tail Ban: ";
 				for (int i = 0; i < bannedArray.Length - 1; i++) {
 					//ex: "尾數禁止: 0,1,2"
 					bannedDisplay.text += bannedArray [i];
@@ -94,7 +97,7 @@ public class AdditionScoreControl : MonoBehaviour {
 				bannedDisplay.text += bannedArray [bannedArray.Length - 1];
 
 			} else {
-				bannedDisplay.text = "任意數禁含: ";
+				bannedDisplay.text = "EveryNum Ban: ";
 				for (int i = 0; i < bannedArray.Length - 1; i++) {
 					//ex: "任意數禁含: 0,1,2"
 					bannedDisplay.text += bannedArray [i];
@@ -114,7 +117,7 @@ public class AdditionScoreControl : MonoBehaviour {
 
 		//讓目標數顯示在UI上
 		targetDisplay.text = "Target: " + targetPoint;
-			
+
 	}
 
 	bool isLegalBannedNumber(char[] inputArr){

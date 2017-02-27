@@ -112,10 +112,10 @@ public class MainGameScript : MonoBehaviour
 			}
 
 			if (availableMoles > 0) {
-				randomMole = (int)Random.Range(0, moles.Count - 1);			
+				randomMole = (int)Random.Range(0, moles.Count);			
 				while(moles[randomMole].sprite.gameObject.activeSelf)
 				{
-					randomMole = (int)Random.Range(0, moles.Count - 1);
+					randomMole = (int)Random.Range(0, moles.Count);
 				}
 					
 				moles[ randomMole ].Trigger(hitTimeLimit);
