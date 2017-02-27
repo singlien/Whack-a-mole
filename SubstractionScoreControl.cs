@@ -8,26 +8,27 @@ public class SubstractionScoreControl : MonoBehaviour {
 	public tk2dTextMesh currentDisplay;
 	public tk2dTextMesh scoreText;
 
-	public bool bannedMode;					//選擇禁止數模式，true="任意數禁含"，false="尾數禁止“
+	public bool bannedMode;	//禁止數模式選擇 true:每一位禁止 false:尾數禁止
 
 	public Vector2 targetMinMax = new Vector2 (50f, 100f);
+	public Vector2 distanceMinMax = new Vector2 (50f, 100f);
 	public Vector2 bannedMinMax = new Vector2 (50f, 100f);
 
-	public bool isBannedFunctionOn = true;	//控制是否開啟禁止數功能
+	//禁止數模式開關 true=開啟 false=關閉
+	public bool isBannedFunctionOn = false;
 
 	private int targetPoint;
-	private int currentPoint;
+//	private int currentPoint;
 	private char[] bannedArray;
 
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 
 		bannedDisplay.text = "";
 
 		//重設點數目標及禁數
-		Debug.LogWarning("Ban?="+isBannedFunctionOn);
 		resetTarget(isBannedFunctionOn);
 
 		//讓遊戲分數歸零
@@ -37,19 +38,23 @@ public class SubstractionScoreControl : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		
 		//遊戲進行中不斷Update目前數字
 		currentDisplay.text = string.Format("Now: {0}" , ScoreScript.CurrentPoint);
 		scoreText.text = string.Format("Score: {0}", ScoreScript.Score);
 		scoreText.Commit();
 
+		//驗證得分
 		if (targetPoint == ScoreScript.CurrentPoint) {	//目標點數=現在點數，得分！
 
-			//得分
+
 			ScoreScript.Score += 10;
 			ScoreScript.CurrentPoint = 0;
+			resetTarget (isBannedFunctionOn);
+
 		}
 		//驗證是否超過目標數
-		if (ScoreScript.CurrentPoint != 0 && (targetPoint < ScoreScript.CurrentPoint) ) {	//不為0 且 爆掉了
+		if (targetPoint > ScoreScript.CurrentPoint ) {	//不為0 且 爆掉了
 			resetTarget (isBannedFunctionOn);
 		}
 		//驗證是否採到禁止數
@@ -58,19 +63,28 @@ public class SubstractionScoreControl : MonoBehaviour {
 				resetTarget (isBannedFunctionOn);
 			}
 		}
+
+		//依各關不同控制
+		//取得hitPoint然後依各關規則修改currentPoint
+		//以本關為例，currentPoint要減hitPoint
+		if (ScoreScript.HitPoint != 0) {
+			ScoreScript.CurrentPoint -= ScoreScript.HitPoint;
+			ScoreScript.HitPoint = 0;
+		}
 	}
 
 	void resetTarget(bool isBannedOn)
 	{
 
 		int bannedNum;
+		int numDistance;		//currentPoint與targetPoint間的數字差異
+
 
 		//現在數歸0
 		ScoreScript.CurrentPoint = 0;
 
 		//判斷禁止模式是否開啟，產生禁止數及目標數
 		if (isBannedOn) {//-->禁止數模式開啟
-			Debug.LogWarning("禁止數模式開啟");
 
 			//隨機產生一個禁止數
 			do {
@@ -86,9 +100,18 @@ public class SubstractionScoreControl : MonoBehaviour {
 				targetPoint = (int)Random.Range (targetMinMax.x, targetMinMax.y);
 			} while(isBanned (targetPoint, bannedMode)); //驗證目標數不能被禁止，不符合則重新產生
 
+
+			//隨機產生一距離數
+			do {
+				//產生距離數
+				numDistance = (int)Random.Range (distanceMinMax.x, distanceMinMax.y);
+				//產生目前數
+				ScoreScript.CurrentPoint = targetPoint + numDistance;
+			} while(isBanned (ScoreScript.CurrentPoint, bannedMode));
+
 			//讓禁止數顯示在UI上
 			if (!bannedMode) {
-				bannedDisplay.text = "Tail Ban: ";
+				bannedDisplay.text = "尾數禁止: ";
 				for (int i = 0; i < bannedArray.Length - 1; i++) {
 					//ex: "尾數禁止: 0,1,2"
 					bannedDisplay.text += bannedArray [i];
@@ -97,7 +120,7 @@ public class SubstractionScoreControl : MonoBehaviour {
 				bannedDisplay.text += bannedArray [bannedArray.Length - 1];
 
 			} else {
-				bannedDisplay.text = "EveryNum Ban: ";
+				bannedDisplay.text = "任意數禁含: ";
 				for (int i = 0; i < bannedArray.Length - 1; i++) {
 					//ex: "任意數禁含: 0,1,2"
 					bannedDisplay.text += bannedArray [i];
@@ -108,8 +131,12 @@ public class SubstractionScoreControl : MonoBehaviour {
 
 
 		} else {
-			//隨機產生一個目標數
+			//產生目標數
 			targetPoint = (int)Random.Range (targetMinMax.x, targetMinMax.y);
+			//產生距離數
+			numDistance = (int)Random.Range (distanceMinMax.x, distanceMinMax.y);
+			//產生目前數
+			ScoreScript.CurrentPoint = targetPoint + numDistance;
 			//顯示在UI上
 			bannedDisplay.text = "";
 
@@ -117,6 +144,8 @@ public class SubstractionScoreControl : MonoBehaviour {
 
 		//讓目標數顯示在UI上
 		targetDisplay.text = "Target: " + targetPoint;
+
+		//註：目前數不用額外顯示，目前數定義後會自動顯示
 
 	}
 

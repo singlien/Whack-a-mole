@@ -73,7 +73,7 @@ public class MainGameScript : MonoBehaviour
 					if(mole.sprite.gameObject.activeSelf && mole.ColliderTransform == hit.transform)
 					{
 						AudioSource.PlayClipAtPoint(moleHit, new Vector3());
-						ScoreScript.CurrentPoint += mole.MolePoint;
+						ScoreScript.HitPoint = mole.MolePoint;
 						mole.Whack();
 						StartCoroutine(CallAnim(mole));
 					}

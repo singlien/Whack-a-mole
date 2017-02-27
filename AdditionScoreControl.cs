@@ -8,14 +8,15 @@ public class AdditionScoreControl : MonoBehaviour {
 	public tk2dTextMesh currentDisplay;
 	public tk2dTextMesh scoreText;
 
-	public bool bannedMode;
+	public bool bannedMode;	//禁止數模式選擇 true:每一位禁止 false:尾數禁止
 
 	public Vector2 targetMinMax = new Vector2 (50f, 100f);
 	public Vector2 bannedMinMax = new Vector2 (50f, 100f);
 
-	private bool isBannedFunctionOn = false;
+	//禁止數模式開關 true=開啟 false=關閉
+	public bool isBannedFunctionOn = false;		
+
 	private int targetPoint;
-	private int currentPoint;
 	private char[] bannedArray;
 
 
@@ -35,6 +36,7 @@ public class AdditionScoreControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
 		//遊戲進行中不斷Update目前數字
 		currentDisplay.text = string.Format("Now: {0}" , ScoreScript.CurrentPoint);
 		scoreText.text = string.Format("Score: {0}", ScoreScript.Score);
@@ -45,6 +47,8 @@ public class AdditionScoreControl : MonoBehaviour {
 			//得分
 			ScoreScript.Score += 10;
 			ScoreScript.CurrentPoint = 0;
+			resetTarget (isBannedFunctionOn);
+
 		}
 		//驗證是否超過目標數
 		if (ScoreScript.CurrentPoint != 0 && (targetPoint < ScoreScript.CurrentPoint) ) {	//不為0 且 爆掉了
@@ -55,6 +59,14 @@ public class AdditionScoreControl : MonoBehaviour {
 			if (isBanned(ScoreScript.CurrentPoint,bannedMode) ) { //踩到禁數 
 				resetTarget (isBannedFunctionOn);
 			}
+		}
+
+		//依各關不同控制
+		//取得hitPoint然後依各關規則修改currentPoint
+		//以本關為例，currentPoint要加hitPoint
+		if (ScoreScript.HitPoint != 0) {
+			ScoreScript.CurrentPoint += ScoreScript.HitPoint;
+			ScoreScript.HitPoint = 0;
 		}
 	}
 

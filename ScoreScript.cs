@@ -6,6 +6,7 @@ public class ScoreScript : MonoBehaviour
 
 	static private int score;
 	static private int currentPoint = 0;
+	static private int hitPoint;
 
 	static public int Score
 	{
@@ -29,12 +30,20 @@ public class ScoreScript : MonoBehaviour
 		}
 	}
 
+	public static int HitPoint {
+		get {
+			return hitPoint;
+		}
+		set {
+			hitPoint = value;
+		}
+	}
 
 	// Use this for initialization
 	void Start ()
 	{
 		score = 0;
-		currentPoint = 0;
+		hitPoint = 0;
 	}
 	
 	// Update is called once per frame
