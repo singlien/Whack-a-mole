@@ -7,8 +7,7 @@ public class MoleScript : MonoBehaviour
 	public tk2dTextMesh numberText;
 //	public AudioClip moleUp;
 //	public AudioClip moleDown;
-	public Vector2 pointMinMax = new Vector2 (1f,9f);
-	
+
 	private float height;
 	private float speed;
 	private float timeLimit;
