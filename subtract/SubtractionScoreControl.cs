@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SubstractionScoreControl : MonoBehaviour {
+public class SubtractionScoreControl : MonoBehaviour {
 
 	public tk2dTextMesh bannedDisplay;
 	public tk2dTextMesh targetDisplay;

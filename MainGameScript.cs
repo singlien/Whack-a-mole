@@ -15,6 +15,7 @@ public class MainGameScript : MonoBehaviour
 	public AudioClip moleHit;
 	public int gameTime = 300;
 	public tk2dTextMesh timeDisplay;
+	private PointGenerator pointGenerator;
 
 	// Treat this class as a singleton.  This will hold the instance of the class.
 	private static MainGameScript instance;
@@ -35,6 +36,10 @@ public class MainGameScript : MonoBehaviour
 	void Awake()
 	{
 		instance = this; 
+		pointGenerator = gameObject.GetComponent<PointGenerator> ();
+		if (pointGenerator == null) {
+			Debug.LogWarning ("Did not fount Point Generator");
+		}
 	}
 	
 	IEnumerator Start () 
@@ -118,7 +123,7 @@ public class MainGameScript : MonoBehaviour
 					randomMole = (int)Random.Range(0, moles.Count);
 				}
 					
-				moles[ randomMole ].Trigger(hitTimeLimit);
+				moles[ randomMole ].Trigger(hitTimeLimit, pointGenerator.numberGenerator());
 //				hitTimeLimit -= hitTimeLimit <= 0.0f ? 0.0f : 0.01f;	// Less time to hit the next mole
 			}
 						

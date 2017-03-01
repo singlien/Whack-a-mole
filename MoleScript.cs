@@ -31,14 +31,14 @@ public class MoleScript : MonoBehaviour
 	
 	// Trigger the mole.  It is now 'active' and the sprite is set to the default mole sprite, just in case it isn't.
 	
-	public void Trigger(float tl)
+	public void Trigger(float tl,int mp)
 	{
 		sprite.gameObject.SetActive (true);
 		isWhacked = false;
 		sprite.SetSprite("Mole_Normal");
 		timeLimit = tl;
 		//Set points on mole
-		molePoint = (int)Random.Range (pointMinMax.x, pointMinMax.y);
+		molePoint = mp;
 
 		//Start the animation
 		StartCoroutine (MainLoop());
