@@ -14,8 +14,7 @@ public class MainGameScript : MonoBehaviour
 	public tk2dSpriteAnimator dustAnimator;
 	public AudioClip moleHit;
 	public tk2dTextMesh timeDisplay;
-	public int gameTime = 120;
-	public int gameTimeDeduct = 5;
+	public static int gameTime = 120;
 
 	private PointGenerator pointGenerator;
 
@@ -89,11 +88,6 @@ public class MainGameScript : MonoBehaviour
 					}
 				}
 			}
-		}
-
-		if (ScoreControlAbstract.fadeStatus) {
-			gameTime -= gameTimeDeduct;
-			ScoreControlAbstract.fadeStatus = false;
 		}
 
 		//Control game time
@@ -201,4 +195,8 @@ public class MainGameScript : MonoBehaviour
 		return gameTime - Time.timeSinceLevelLoad;
 	}
 
+	public static void GameTimeChange(int amount)
+	{
+		gameTime += amount;
+	}
 }

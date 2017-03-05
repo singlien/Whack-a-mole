@@ -10,17 +10,18 @@ public abstract class ScoreControlAbstract : MonoBehaviour {
 	public tk2dTextMesh targetDisplay;
 	public tk2dTextMesh currentDisplay;
 	public tk2dTextMesh scoreDisplay;
-	public Image fadeImage;
 
+	public int gameTimeBonus = 10;
+	public int gameTimeDeduct = -5;
+
+	public Image fadeImage;
 	public float fadeTime = 10f;
 
-	public static bool fadeStatus;
 
 
 	protected void fade()
 	{
 		fadeImage.color = Color.red;
-		fadeStatus = true;
 		StartCoroutine (recoverLoop ());
 	}
 

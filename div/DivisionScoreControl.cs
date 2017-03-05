@@ -57,6 +57,8 @@ public class DivisionScoreControl : ScoreControlAbstract {
 			ScoreScript.Score += 10 ;
 			//重設目標
 			ScoreScript.CurrentPoint = resetTarget ();
+			//增加遊戲時間
+			MainGameScript.GameTimeChange(gameTimeBonus);
 		}
 
 		//依各關不同控制
@@ -69,6 +71,8 @@ public class DivisionScoreControl : ScoreControlAbstract {
 				//illegal 重設目標
 				ScoreScript.CurrentPoint = resetTarget ();
 				fade ();
+				//減少遊戲時間
+				MainGameScript.GameTimeChange(gameTimeDeduct);
 			}
 			
 			ScoreScript.HitPoint = 0;
@@ -77,6 +81,7 @@ public class DivisionScoreControl : ScoreControlAbstract {
 		if (ScoreScript.CurrentPoint <= 0) {//出現不合理的數
 			ScoreScript.CurrentPoint = resetTarget();
 			fade ();
+			MainGameScript.GameTimeChange (gameTimeDeduct);
 		}
 
 	}

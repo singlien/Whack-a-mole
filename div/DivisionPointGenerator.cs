@@ -31,7 +31,8 @@ public class DivisionPointGenerator : PointGenerator
 		pointAndSeq.y = Random.Range (0, moleKinds);		//sequence
 		pointAndSeq.x = (int)prime [(int)pointAndSeq.y];	//point
 
-		generatedPoint.Add ((int)pointAndSeq.x);
+		//儲存生成數字
+		generatedPoint.Add (pointAndSeq);
 
 		return pointAndSeq;
 	}

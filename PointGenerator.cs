@@ -6,18 +6,18 @@ using System.Collections.Generic;
 public abstract class PointGenerator : MonoBehaviour 
 {
 	//儲存出現過的點數
-	protected List<int> generatedPoint = new List<int> ();
+	protected List<Vector2> generatedPoint = new List<Vector2> ();
 
 	public abstract Vector2 numberGenerator();
 
 
 	//Debug
-//	void OnDestroy(){
-//		foreach(int i in generatedPoint){
-//			print(i);
-//		}
-//		generatedPoint = null;
-//	}
+	void OnDestroy(){
+		foreach(Vector2 i in generatedPoint){
+			print("(point, sequence) = "+i);
+		}
+		generatedPoint = null;
+	}
 
 
 }

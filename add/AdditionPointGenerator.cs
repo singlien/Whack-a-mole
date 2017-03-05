@@ -33,6 +33,9 @@ public class AdditionPointGenerator : PointGenerator  {
 		//依種類生成數字
 		pointAndSeq.x = (int)Random.Range (min, max);
 
+		//儲存生成數字
+		generatedPoint.Add (pointAndSeq);
+
 		return pointAndSeq;
 	}
 
