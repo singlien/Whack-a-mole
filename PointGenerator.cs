@@ -5,10 +5,11 @@ using System.Collections.Generic;
 
 public abstract class PointGenerator : MonoBehaviour 
 {
-
+	//儲存出現過的點數
 	protected List<int> generatedPoint = new List<int> ();
 
-	public abstract int numberGenerator();
+	public abstract Vector2 numberGenerator();
+
 
 	//Debug
 //	void OnDestroy(){

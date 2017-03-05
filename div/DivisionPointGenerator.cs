@@ -4,7 +4,9 @@ using System.Collections;
 //控制生成的數字
 public class DivisionPointGenerator : PointGenerator
 {
-//	public Vector2 pointMinMax = new Vector2 (1f,9f);
+	// Attention!!
+	// 這邊的變數要和moleScript的陣列大小設一樣，若設定不一樣，遊戲會運作錯誤，且unity不會提出警告
+	public int moleKinds;
 
 	//宣告質數陣列
 	private int[] prime = new int[6];
@@ -20,20 +22,18 @@ public class DivisionPointGenerator : PointGenerator
 		prime [3] = 7;
 		prime [4] = 11;
 		prime [5] = 13;
-
-
 	}
 
+	public override Vector2 numberGenerator(){
+		
+		Vector2 pointAndSeq;
 
-	public override int numberGenerator(){
-		int point;
-		int sequence;
+		pointAndSeq.y = Random.Range (0, moleKinds);		//sequence
+		pointAndSeq.x = (int)prime [(int)pointAndSeq.y];	//point
 
-		sequence = Random.Range (0, 6);
-		point = prime [sequence];
+		generatedPoint.Add ((int)pointAndSeq.x);
 
-		generatedPoint.Add (point);
-
-		return point;
+		return pointAndSeq;
 	}
+		
 }

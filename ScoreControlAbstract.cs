@@ -14,23 +14,24 @@ public abstract class ScoreControlAbstract : MonoBehaviour {
 
 	public float fadeTime = 10f;
 
+	public static bool fadeStatus;
 
 
-	protected void fade(){
+	protected void fade()
+	{
 		fadeImage.color = Color.red;
+		fadeStatus = true;
 		StartCoroutine (recoverLoop ());
 	}
 
-	private IEnumerator recoverLoop(){
-		
+	private IEnumerator recoverLoop()
+	{
+		// Turn back to clear slowly after amount of time
 		while (fadeImage.color != Color.clear)
 		{
-//			print ("color:"+fadeImage.color);
 			fadeImage.color = Color.Lerp (fadeImage.color, Color.clear, fadeTime * Time.deltaTime);
 			yield return null;
 		}
 		StopCoroutine (recoverLoop());
-//		Debug.Log ("EndLoop");
-
 	}
 }

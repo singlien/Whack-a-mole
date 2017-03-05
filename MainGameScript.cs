@@ -13,8 +13,10 @@ public class MainGameScript : MonoBehaviour
 	public Camera gameCam;
 	public tk2dSpriteAnimator dustAnimator;
 	public AudioClip moleHit;
-	public int gameTime = 300;
 	public tk2dTextMesh timeDisplay;
+	public int gameTime = 120;
+	public int gameTimeDeduct = 5;
+
 	private PointGenerator pointGenerator;
 
 	// Treat this class as a singleton.  This will hold the instance of the class.
@@ -44,6 +46,9 @@ public class MainGameScript : MonoBehaviour
 	
 	IEnumerator Start () 
 	{
+
+		yield return 0;  // Let other settings load first, wait for next frame
+
 		gameEnd = false;
 
 		if (moleLimit > moles.Count) {
@@ -57,7 +62,7 @@ public class MainGameScript : MonoBehaviour
 		}
 		// Yield here to give everything else a chance to be set up before we start our main game loop
 		
-		yield return 0;  // wait for the next frame!
+		yield return null;  // wait for the next frame!
 
 		dustAnimator.gameObject.SetActive(false);
 		StartCoroutine(MainGameLoop());
@@ -75,7 +80,7 @@ public class MainGameScript : MonoBehaviour
 			{
 				foreach(MoleScript mole in moles)
 				{
-					if(mole.sprite.gameObject.activeSelf && mole.ColliderTransform == hit.transform)
+					if(mole.IsActivate && mole.ColliderTransform == hit.transform)
 					{
 						AudioSource.PlayClipAtPoint(moleHit, new Vector3());
 						ScoreScript.HitPoint = mole.MolePoint;
@@ -86,6 +91,10 @@ public class MainGameScript : MonoBehaviour
 			}
 		}
 
+		if (ScoreControlAbstract.fadeStatus) {
+			gameTime -= gameTimeDeduct;
+			ScoreControlAbstract.fadeStatus = false;
+		}
 
 		//Control game time
 		float timeLeft = DownCounter();
@@ -111,19 +120,32 @@ public class MainGameScript : MonoBehaviour
 			// Check if there are any free moles to choose from
 			int availableMoles = 0;
 			for (int i = 0; i < moles.Count; ++i) {
-				if (!moles[i].sprite.gameObject.activeSelf) {
+				if (!moles[i].IsActivate) {
 					availableMoles++;
 				}
 			}
 
 			if (availableMoles > 0) {
+				
 				randomMole = (int)Random.Range(0, moles.Count);			
-				while(moles[randomMole].sprite.gameObject.activeSelf)
+				while(moles[randomMole].IsActivate)
 				{
 					randomMole = (int)Random.Range(0, moles.Count);
 				}
-					
-				moles[ randomMole ].Trigger(hitTimeLimit, pointGenerator.numberGenerator());
+				//return point-x and sequence-y
+				Vector2 pAnds = pointGenerator.numberGenerator ();
+
+				int point = (int)pAnds.x;
+				int type = (int)pAnds.y;
+//				print ("point:" + point + ", type" + type);
+
+				// Wait until it is Inactivate
+				while(moles[randomMole].IsActivate)
+				{
+					yield return null;
+				}
+				// Trigger the mole
+				moles [randomMole].Trigger (hitTimeLimit, point, type);
 //				hitTimeLimit -= hitTimeLimit <= 0.0f ? 0.0f : 0.01f;	// Less time to hit the next mole
 			}
 						
@@ -148,7 +170,7 @@ public class MainGameScript : MonoBehaviour
 			
 			foreach(MoleScript mole in moles)
 			{
-				molesActive += mole.sprite.gameObject.activeSelf ? 1 : 0;
+				molesActive += mole.IsActivate ? 1 : 0;
 			}
 		}
 		while(molesActive >= moleLimit);

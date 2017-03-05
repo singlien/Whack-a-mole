@@ -3,8 +3,10 @@ using System.Collections;
 
 public class MoleScript : MonoBehaviour 
 {
-	public tk2dClippedSprite sprite;
-	public tk2dTextMesh numberText;
+//	public const int SIZE = 3;
+	public tk2dClippedSprite[] sprite = new tk2dClippedSprite[3];
+
+//	public tk2dTextMesh numberText;
 //	public AudioClip moleUp;
 //	public AudioClip moleDown;
 
@@ -12,12 +14,22 @@ public class MoleScript : MonoBehaviour
 	private float speed;
 	private float timeLimit;
 	private Rect spriteRec;
-	private bool isWhacked;				//is hit?
+	private bool isWhacked;				// is it hit?
 	private float transformY;
-	private int molePoint = 0; 	//point on mole body
+	private int molePoint = 0; 			// point on mole body
+	private int moleType = -1;			// Select the mole
+
+	// To enable to hit
+	private bool isActivate;
+
+	public bool IsActivate {
+		get {
+			return isActivate;
+		}
+	}
 
 
-	
+	// To recognize the transform for hit
 	private Transform colliderTransform;
 
 	public Transform ColliderTransform
@@ -30,46 +42,62 @@ public class MoleScript : MonoBehaviour
 	
 	// Trigger the mole.  It is now 'active' and the sprite is set to the default mole sprite, just in case it isn't.
 	
-	public void Trigger(float tl,int mp)
+	public void Trigger(float tl,int mp,int type)
 	{
-		sprite.gameObject.SetActive (true);
+		moleType = type;
+
+		sprite[moleType].gameObject.SetActive (true);
 		isWhacked = false;
-		sprite.SetSprite("Mole_Normal");
+		sprite[moleType].SetSprite("Mole_Normal");
 		timeLimit = tl;
 		//Set points on mole
 		molePoint = mp;
+		isActivate = true;
 
 		//Start the animation
 		StartCoroutine (MainLoop());
 	}
-
+		
 	void Start()
 	{
 		timeLimit = 1.0f;
 		speed = 2.0f;
-		
-		// Get the 'size' of the mole sprite
-		Bounds bounds = sprite.GetUntrimmedBounds();
-		height = bounds.max.y - bounds.min.y;
-		
-		// We want the mole to be fully clipped on the Y axis initially.
-		spriteRec = sprite.ClipRect;
-		spriteRec.y = 1.0f;
-		sprite.ClipRect = spriteRec;
 
-		colliderTransform = sprite.transform;
+		for (int i = 0; i < sprite.Length; i++) {
+			
+			// Get the 'size' of the mole sprite
+			Bounds bounds = sprite [i].GetUntrimmedBounds ();
+			height = bounds.max.y - bounds.min.y;
 		
-		//Move the mole sprite into the correct place relative to the hole
-		Vector3 localPos = sprite.transform.localPosition;
-		transformY = localPos.y;
-		localPos.y = transformY - (height * sprite.ClipRect.y);
-		sprite.transform.localPosition = localPos;
+			// We want the mole to be fully clipped on the Y axis initially.
+			spriteRec = sprite [i].ClipRect;
+			spriteRec.y = 1.0f;
+			sprite [i].ClipRect = spriteRec;
+					
+			//Move the mole sprite into the correct place relative to the hole
+			Vector3 localPos = sprite [i].transform.localPosition;
+			transformY = localPos.y;
+			localPos.y = transformY - (height * sprite [i].ClipRect.y);
+			sprite [i].transform.localPosition = localPos;
 		
-		sprite.gameObject.SetActive (false);
-		numberText.text = "";
-		
+			sprite [i].gameObject.SetActive (false);
+			sprite [i].GetComponentInChildren<tk2dTextMesh> ().text = "";
+
+
+		}
 		// Add mole to the main game script's mole container
 		MainGameScript.Instance.RegisterMole(this);
+	}
+
+	// Update is called once per frame
+	void Update ()
+	{
+		// In order to prevent array out of bound. Just reset it to 0.
+		if (moleType >= sprite.Length) {
+			Debug.LogWarning ("Array Out Of Bound, reset moleType to 0");
+			moleType = 0;
+		}
+
 	}
 	
 	// Main loop for the sprite.  Move up, then wait, then move down again. Simple.
@@ -87,26 +115,30 @@ public class MoleScript : MonoBehaviour
 
 		while(spriteRec.y > 0.0f)
 		{
-			spriteRec = sprite.ClipRect;
+			spriteRec = sprite[moleType].ClipRect;
 			float newYPos = spriteRec.y - speed * Time.deltaTime;
 			spriteRec.y = newYPos < 0.0f ? 0.0f : newYPos;
-			sprite.ClipRect = spriteRec;
+			sprite[moleType].ClipRect = spriteRec;
 			
-			Vector3 localPos = sprite.transform.localPosition;
-			localPos.y = transformY - (height * sprite.ClipRect.y);
-			sprite.transform.localPosition = localPos;
+			Vector3 localPos = sprite[moleType].transform.localPosition;
+			localPos.y = transformY - (height * sprite[moleType].ClipRect.y);
+			sprite[moleType].transform.localPosition = localPos;
 			
 			yield return null;
 		}
 
 		//顯示mole身上的東西
-		numberText.text = molePoint.ToString ();
+		sprite[moleType].GetComponentInChildren<tk2dTextMesh> ().text = molePoint.ToString ();
+
 
 	}
 	
 	// Give the player a chance to hit the mole.
 	private IEnumerator WaitForHit()
 	{
+		// Set collider in order to detect hit
+		colliderTransform = sprite [moleType].transform;
+
 		float time = 0.0f;
 		
 		while(!isWhacked && time < timeLimit)
@@ -120,31 +152,36 @@ public class MoleScript : MonoBehaviour
 	private IEnumerator MoveDown()
 	{		
 		//先讓mole身上的數字消失，然後再下降
-		numberText.text = "";
+		sprite[moleType].GetComponentInChildren<tk2dTextMesh> ().text = "";
 
 		while(spriteRec.y < 1.0f)
 		{ 
-			spriteRec = sprite.ClipRect;
+			spriteRec = sprite[moleType].ClipRect;
 			float newYPos = spriteRec.y + speed * Time.deltaTime;
 			spriteRec.y = newYPos > 1.0f ? 1.0f : newYPos;
-			sprite.ClipRect = spriteRec;
+			sprite[moleType].ClipRect = spriteRec;
 			
-			Vector3 localPos = sprite.transform.localPosition;
-			localPos.y = transformY - (height * sprite.ClipRect.y);
-			sprite.transform.localPosition = localPos;
+			Vector3 localPos = sprite[moleType].transform.localPosition;
+			localPos.y = transformY - (height * sprite[moleType].ClipRect.y);
+			sprite[moleType].transform.localPosition = localPos;
 			
 			yield return null;
 		}
 
 //		AudioSource.PlayClipAtPoint(moleDown, new Vector3());
-		sprite.gameObject.SetActive(false);
+
+		// This will stop coroutine
+		sprite [moleType].gameObject.SetActive (false);
+		isActivate = false;
+
 	}
 	
 	// Mole has been hit
 	public void Whack()
 	{
 		isWhacked = true;
-		sprite.SetSprite("Mole_Hit");
+		sprite[moleType].SetSprite("Mole_Hit");
+		//打爆之後可以在此處讓數字消失
 	}
 		
 	public bool Whacked
