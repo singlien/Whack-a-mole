@@ -29,5 +29,8 @@ public abstract class ScoreControlAbstract : MonoBehaviour {
 			fadeImage.color = Color.Lerp (fadeImage.color, Color.clear, fadeTime * Time.deltaTime);
 			yield return null;
 		}
+		StopCoroutine (recoverLoop());
+//		Debug.Log ("EndLoop");
+
 	}
 }

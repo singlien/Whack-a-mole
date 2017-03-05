@@ -22,9 +22,14 @@ public class DivisionScoreControl : ScoreControlAbstract {
 	// Use this for initialization
 	void Start () {
 		
+		//Debug:所有開關ON -> 一定要開 不然會當掉
+		for (int i = 0; i < indexOnOff.Length; i++)
+			indexOnOff [i] = true;
+		//Debug----------
+
+
 		//目標數歸零
-		//若直接等於resetTarget會陷入無限迴圈，目前無解
-		ScoreScript.CurrentPoint = 0;
+		ScoreScript.CurrentPoint = resetTarget();
 
 		//讓目標數顯示在UI上，target===1
 		targetDisplay.text = "Target: 1";
@@ -34,10 +39,7 @@ public class DivisionScoreControl : ScoreControlAbstract {
 		targetPoint = 1;
 
 
-		//Debug:所有開關ON -> 一定要開 不然會當掉
-		for (int i = 0; i < indexOnOff.Length; i++)
-			indexOnOff [i] = true;
-		//Debug----------
+
 	}
 	
 	// Update is called once per frame
