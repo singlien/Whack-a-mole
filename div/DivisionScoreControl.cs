@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DivisionScoreControl : MonoBehaviour {
+public class DivisionScoreControl : ScoreControlAbstract {
 
-//	public tk2dTextMesh bannedDisplay;
-	public tk2dTextMesh targetDisplay;
-	public tk2dTextMesh currentDisplay;
-	public tk2dTextMesh scoreDisplay;
+	//文字顯示繼承ScoreControlAbstract
 
 	//目標相關	
 	public int highIndexStart = 4;									//2,3,5,'7',11,13，高次方起始點
@@ -37,7 +34,7 @@ public class DivisionScoreControl : MonoBehaviour {
 		targetPoint = 1;
 
 
-		//Debug:所有開關ON
+		//Debug:所有開關ON -> 一定要開 不然會當掉
 		for (int i = 0; i < indexOnOff.Length; i++)
 			indexOnOff [i] = true;
 		//Debug----------
@@ -66,15 +63,18 @@ public class DivisionScoreControl : MonoBehaviour {
 			
 			if ((ScoreScript.CurrentPoint % ScoreScript.HitPoint) == 0) {	//legal 
 				ScoreScript.CurrentPoint /= ScoreScript.HitPoint;
-			} else
+			} else {
 				//illegal 重設目標
 				ScoreScript.CurrentPoint = resetTarget ();
+				fade ();
+			}
 			
 			ScoreScript.HitPoint = 0;
 		}
 
 		if (ScoreScript.CurrentPoint <= 0) {//出現不合理的數
 			ScoreScript.CurrentPoint = resetTarget();
+			fade ();
 		}
 
 	}
