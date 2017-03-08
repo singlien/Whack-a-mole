@@ -5,6 +5,7 @@ public class AdditionPointGenerator : PointGenerator  {
 
 	public Vector2[] moleKind = new Vector2[3];
 
+	// 機率控制地鼠出現機率，三者加起來為1
 	public float[] typeChance = new float[3];
 	private float[] sumArray = new float[3];
 
@@ -40,6 +41,20 @@ public class AdditionPointGenerator : PointGenerator  {
 				sumArray [i] += typeChance [j];
 			}
 		}
+	}
+
+	void Update(){
+		// 歸0
+		for (int i = 0; i < sumArray.Length; i++) {
+			sumArray[i] = 0f;
+		}
+
+		// Sum the chance and save them into an array
+		for (int i = 0; i < typeChance.Length; i++) {
+			for (int j = 0; j <= i; j++) {
+				sumArray [i] += typeChance [j];
+			}
+		}
 
 	}
 
@@ -48,6 +63,7 @@ public class AdditionPointGenerator : PointGenerator  {
 
 		//控制生成種類
 		pointAndSeq.y = typeChooser();
+//		Debug.Log ("chooseType:"+pointAndSeq.y);
 
 		float min, max;
 		min = moleKind [(int)pointAndSeq.y].x;
@@ -64,7 +80,7 @@ public class AdditionPointGenerator : PointGenerator  {
 
 	private int typeChooser(){
 		float range = Random.value;
-//		print (range);
+//		Debug.Log (range);
 
 		if (0f <= range && range <= sumArray [0]) {//0~.5
 			return 0;

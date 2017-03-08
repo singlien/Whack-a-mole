@@ -48,18 +48,22 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 			ScoreScript.Score += 10;
 			ScoreScript.CurrentPoint = 0;
 			resetTarget (isBannedFunctionOn);
+			MainGameScript.GameTimeChange (gameTimeBonus);
 
 		}
 		//驗證是否超過目標數
 		if (targetPoint > ScoreScript.CurrentPoint ) {	//不為0 且 爆掉了
 			resetTarget (isBannedFunctionOn);
 			fade ();
+			MainGameScript.GameTimeChange(gameTimeDeduct);
 		}
 		//驗證是否採到禁止數
 		if (isBannedFunctionOn) {//禁數模式開啟
 			if (isBanned(ScoreScript.CurrentPoint,bannedMode) ) { //踩到禁數 
 				resetTarget (isBannedFunctionOn);
 				fade ();
+				//扣遊戲時間
+				MainGameScript.GameTimeChange(gameTimeDeduct);
 			}
 		}
 
