@@ -13,7 +13,7 @@ public class DivisionScoreControl : ScoreControlAbstract {
 	public bool[] indexOnOff = new bool[6];							//指數開關：true=On, false=Off 
 
 
-	private int targetPoint;
+//	private int targetPoint;
 //	private int currentPoint;
 //	private char[] bannedArray;
 

@@ -17,6 +17,14 @@ public abstract class ScoreControlAbstract : MonoBehaviour {
 	public Image fadeImage;
 	public float fadeTime = 10f;
 
+	protected int targetPoint;
+
+	public int TargetPoint {
+		get {
+			return targetPoint;
+		}
+	}
+
 
 
 	protected void fade()

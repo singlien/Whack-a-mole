@@ -13,14 +13,10 @@ public class AdditionScoreControl : ScoreControlAbstract {
 	//禁止數模式開關 true=開啟 false=關閉
 	public bool isBannedFunctionOn = false;		
 
-	private int targetPoint;
+//	private int targetPoint;
 	private char[] bannedArray;
 
-	public int TargetPoint {
-		get {
-			return targetPoint;
-		}
-	}
+
 
 
 	// Use this for initialization

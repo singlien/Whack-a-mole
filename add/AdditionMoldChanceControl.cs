@@ -12,12 +12,9 @@ public class AdditionMoldChanceControl : MonoBehaviour {
 		
 	public ChanceStruct[] CSArray = new ChanceStruct[3];
 
-	public float transitTime = 3f;
-
-	private bool lerping;
 	private int currentDist;
 	private AdditionPointGenerator apg;
-	private AdditionScoreControl asc;
+	private ScoreControlAbstract asc;
 
 	private Vector3 startValue;
 
@@ -25,14 +22,17 @@ public class AdditionMoldChanceControl : MonoBehaviour {
 	void Start () {
 	
 		apg = gameObject.GetComponent<AdditionPointGenerator> ();
-		asc = gameObject.GetComponent<AdditionScoreControl> ();
+		asc = gameObject.GetComponent<ScoreControlAbstract> ();
 
-		lerping = false;
 
 		//Debug
 		foreach(ChanceStruct a in CSArray){
 			if (a.dist == 0) {
-				Debug.LogWarning("AI距離設定不正確");
+				Debug.LogWarning ("AI距離設定不正確");
+			}
+			//必須轉成字串才能比較，因為float有浮點數誤差
+			if ((a.endValue.x + a.endValue.y + a.endValue.z).ToString() != 1f.ToString()) {
+				Debug.LogWarning ("和為"+(a.endValue.x + a.endValue.y + a.endValue.z) + "機率設定不正確");
 			}
 		}
 	}
@@ -46,47 +46,31 @@ public class AdditionMoldChanceControl : MonoBehaviour {
 		startValue.y = apg.typeChance [1];
 		startValue.z = apg.typeChance [2];
 
-//		print ("dist:" + currentDist + " lerp?:" + lerping);
+		//Debug
+//		print("dist:"+currentDist);
 
+		//依距離判斷要執行的機率腳本
 		if (currentDist <= CSArray[0].dist) { //<10
-			//如果不是在lerp才觸動AI
-			if (!lerping && startValue != CSArray [0].endValue) {
-				StartCoroutine (lerpLoop (startValue, CSArray [0].endValue, transitTime * Time.deltaTime));
+			//只有在不是這個設定值的時候才套用此設定值
+			if (startValue != CSArray [0].endValue) {
+				apg.typeChance [0] = CSArray [0].endValue.x;
+				apg.typeChance [1] = CSArray [0].endValue.y;
+				apg.typeChance [2] = CSArray [0].endValue.z;
 			}
 		}else if (CSArray [0].dist < currentDist && currentDist < CSArray[2].dist) { // 10~50
-			//如果不是在lerp才觸動AI
-			if (!lerping && startValue != CSArray [1].endValue) {
-				StartCoroutine (lerpLoop (startValue, CSArray [1].endValue, transitTime * Time.deltaTime));
+			//只有在不是這個設定值的時候才套用此設定值
+			if (startValue != CSArray [1].endValue) {
+				apg.typeChance [0] = CSArray [1].endValue.x;
+				apg.typeChance [1] = CSArray [1].endValue.y;
+				apg.typeChance [2] = CSArray [1].endValue.z;
 			}
 		}else if (currentDist >= CSArray[2].dist) {
-			//如果不是在lerp才觸動AI
-			if (!lerping && startValue != CSArray [2].endValue) {
-				StartCoroutine (lerpLoop (startValue, CSArray [2].endValue, transitTime * Time.deltaTime));
+			//只有在不是這個設定值的時候才套用此設定值
+			if (startValue != CSArray [2].endValue) {
+				apg.typeChance [0] = CSArray [2].endValue.x;
+				apg.typeChance [1] = CSArray [2].endValue.y;
+				apg.typeChance [2] = CSArray [2].endValue.z;
 			}
 		}
-
-	}
-
-	private IEnumerator lerpLoop(Vector3 start,Vector3 end, float time){
-
-		Vector3 temp = start;
-		lerping = true;
-		// Wait for next frame
-		yield return null;
-
-		while (temp.x != end.x || temp.y != end.y || temp.z != end.z) {
-			temp.x = Mathf.Lerp (temp.x, end.x, transitTime * Time.deltaTime);
-			temp.y = Mathf.Lerp (temp.y, end.y, transitTime * Time.deltaTime);
-			temp.z = Mathf.Lerp (temp.z, end.z, transitTime * Time.deltaTime);
-
-			apg.typeChance [0] = temp.x;
-			apg.typeChance [1] = temp.y;
-			apg.typeChance [2] = temp.z;
-
-			yield return null;
-		}
-
-		lerping = false;
-		StopCoroutine ("lerpLoop");
 	}
 }
