@@ -14,14 +14,14 @@ public class AdditionPointGenerator : PointGenerator  {
 	void Start () {
 
 		//Check the settings
-		for (int i=0;i<moleKind.Length;i++) 
+		for (int i = 0; i < moleKind.Length; i++) 
 		{
 			//通常不會執行，如果執行則需查看參數
-			if (moleKind[i].x == 0 || moleKind[i].y == 0) {
+			if (moleKind [i].x == 0 || moleKind [i].y == 0) {
 				Debug.LogWarning ("Using default number area, Please check Settings in AdditionPointGenerator");
 				// Reset to default
-				moleKind[i].x = 1;
-				moleKind[i].y = 9;
+				moleKind [i].x = 1;
+				moleKind [i].y = 9;
 			}
 		}
 

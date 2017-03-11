@@ -14,7 +14,7 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 	//禁止數模式開關 true=開啟 false=關閉
 	public bool isBannedFunctionOn = false;
 
-//	private int targetPoint;
+	// targetPoint 繼承自ScoreControlAbstract
 //	private int currentPoint;
 	private char[] bannedArray;
 

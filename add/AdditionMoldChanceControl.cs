@@ -14,7 +14,7 @@ public class AdditionMoldChanceControl : MonoBehaviour {
 
 	private int currentDist;
 	private AdditionPointGenerator apg;
-	private ScoreControlAbstract asc;
+	private ScoreControlAbstract ScoreControl;
 
 	private Vector3 startValue;
 
@@ -22,7 +22,8 @@ public class AdditionMoldChanceControl : MonoBehaviour {
 	void Start () {
 	
 		apg = gameObject.GetComponent<AdditionPointGenerator> ();
-		asc = gameObject.GetComponent<ScoreControlAbstract> ();
+		//透過繼承應用在各個mode
+		ScoreControl = gameObject.GetComponent<ScoreControlAbstract> ();
 
 
 		//Debug
@@ -40,7 +41,7 @@ public class AdditionMoldChanceControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		currentDist = Mathf.Abs(asc.TargetPoint - ScoreScript.CurrentPoint);
+		currentDist = Mathf.Abs(ScoreControl.TargetPoint - ScoreScript.CurrentPoint);
 
 		startValue.x = apg.typeChance [0];
 		startValue.y = apg.typeChance [1];
