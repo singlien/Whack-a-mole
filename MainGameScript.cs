@@ -96,7 +96,7 @@ public class MainGameScript : MonoBehaviour
 		//Control game time
 		float timeLeft = DownCounter();
 		if (timeLeft <= 0) {
-			print ("Gameover");
+//			print ("Gameover");
 			GameOverFunc ();
 			gameEnd = true;
 		} else {
