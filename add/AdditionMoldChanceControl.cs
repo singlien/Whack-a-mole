@@ -26,7 +26,7 @@ public class AdditionMoldChanceControl : MonoBehaviour {
 		ScoreControl = gameObject.GetComponent<ScoreControlAbstract> ();
 
 
-		//Debug
+		// 驗証各組合機率和為1
 		foreach(ChanceStruct a in CSArray){
 			if (a.dist == 0) {
 				Debug.LogWarning ("AI距離設定不正確");

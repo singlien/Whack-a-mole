@@ -107,7 +107,12 @@ public class DivisionScoreControl : ScoreControlAbstract {
 //			count++;
 
 		} 
-
+		//Debug
+		string word = "";
+		foreach (int i in index) {
+			word += i + ",";
+		}
+		Debug.Log ("產生的" + word);
 
 		//乘起來
 		target = (int)(Mathf.Pow (2f, (float)index [0]) *

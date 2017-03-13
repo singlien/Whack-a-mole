@@ -14,6 +14,11 @@ public class DivisionPointGenerator : PointGenerator
 	//宣告質數陣列
 	private int[] prime = new int[6];
 
+	public int[] Prime {
+		get {
+			return prime;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -31,9 +36,12 @@ public class DivisionPointGenerator : PointGenerator
 		foreach(float i in typeChance){ check += i; }
 		if (check != 1) {
 			Debug.LogWarning ("Generator chance settings invalid, using default chance");
-			typeChance [0] = .5f;
-			typeChance [1] = .3f;
+			typeChance [0] = .2f;
+			typeChance [1] = .2f;
 			typeChance [2] = .2f;
+			typeChance [3] = .2f;
+			typeChance [4] = .1f;
+			typeChance [5] = .1f;
 		}
 
 		// Sum the chance and save them into an array
