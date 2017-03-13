@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class MainGameScript : MonoBehaviour
 {	
@@ -15,6 +16,8 @@ public class MainGameScript : MonoBehaviour
 	public AudioClip moleHit;
 	public tk2dTextMesh timeDisplay;
 	public static int gameTime = 120;
+
+	public Image gameoverImg;
 
 	private PointGenerator pointGenerator;
 
@@ -70,7 +73,7 @@ public class MainGameScript : MonoBehaviour
 	void Update()
 	{
 		// Check to see if mouse has been clicked, and if so check to see if it has 'hit' any of the moles, and check which mole.
-		if(Input.GetButtonDown ("Fire1"))
+		if(Input.GetButtonDown ("Fire1") && !gameEnd)
 		{
 			Ray ray = gameCam.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit = new RaycastHit();
@@ -94,6 +97,7 @@ public class MainGameScript : MonoBehaviour
 		float timeLeft = DownCounter();
 		if (timeLeft <= 0) {
 			print ("Gameover");
+			GameOverFunc ();
 			gameEnd = true;
 		} else {
 			timeDisplay.text = "Time Left:"+(int)timeLeft+"s";
@@ -198,5 +202,10 @@ public class MainGameScript : MonoBehaviour
 	public static void GameTimeChange(int amount)
 	{
 		gameTime += amount;
+	}
+
+	private void GameOverFunc(){
+		gameoverImg.GetComponentInChildren<Text> ().text = "Score: " + ScoreScript.Score;
+		gameoverImg.gameObject.SetActive (true);
 	}
 }
