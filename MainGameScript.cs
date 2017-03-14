@@ -8,6 +8,12 @@ public class MainGameScript : MonoBehaviour
 	private List<MoleScript> moles = new List<MoleScript>();
 	private bool gameEnd;
 
+	public bool GameEnd {
+		get {
+			return gameEnd;
+		}
+	}
+
 	public float hitTimeLimit = 5f;
 	public Vector2 TimeWaitBeforeInstaniate = new Vector2 (5f, 1000f);
 	public int moleLimit = 5;
@@ -16,8 +22,6 @@ public class MainGameScript : MonoBehaviour
 	public AudioClip moleHit;
 	public tk2dTextMesh timeDisplay;
 	public static int gameTime = 120;
-
-	public Image gameoverImg;
 
 	private PointGenerator pointGenerator;
 
@@ -97,7 +101,6 @@ public class MainGameScript : MonoBehaviour
 		float timeLeft = DownCounter();
 		if (timeLeft <= 0) {
 //			print ("Gameover");
-			GameOverFunc ();
 			gameEnd = true;
 		} else {
 			timeDisplay.text = "Time Left:"+(int)timeLeft+"s";
@@ -204,8 +207,4 @@ public class MainGameScript : MonoBehaviour
 		gameTime += amount;
 	}
 
-	private void GameOverFunc(){
-		gameoverImg.GetComponentInChildren<Text> ().text = "Score: " + ScoreScript.Score;
-		gameoverImg.gameObject.SetActive (true);
-	}
 }
