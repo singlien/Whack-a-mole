@@ -32,7 +32,10 @@ public class DivisionScoreControl : ScoreControlAbstract {
 		ScoreScript.CurrentPoint = resetTarget();
 
 		//讓目標數顯示在UI上，target===1
-		targetDisplay.text = "Target: 1";
+		if(targetDisplay==null){
+			Debug.Log ("Unable Locate targetText");
+		}else
+			targetDisplay.text = "Target: 1";
 
 		//讓遊戲分數歸零
 		ScoreScript.Score = 0;

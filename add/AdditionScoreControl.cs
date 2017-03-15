@@ -11,7 +11,7 @@ public class AdditionScoreControl : ScoreControlAbstract {
 	public Vector2 bannedMinMax = new Vector2 (50f, 100f);
 
 	//禁止數模式開關 true=開啟 false=關閉
-	public bool isBannedFunctionOn = false;		
+	public bool BanSwitch = false;		
 
 //	private int targetPoint;
 	private char[] bannedArray;
@@ -25,7 +25,7 @@ public class AdditionScoreControl : ScoreControlAbstract {
 		bannedDisplay.text = "";
 
 		//重設點數目標及禁數
-		resetTarget(isBannedFunctionOn);
+		resetTarget(BanSwitch);
 
 		//讓遊戲分數歸零
 		ScoreScript.Score = 0;
@@ -45,20 +45,20 @@ public class AdditionScoreControl : ScoreControlAbstract {
 			//得分
 			ScoreScript.Score += 10;
 			ScoreScript.CurrentPoint = 0;
-			resetTarget (isBannedFunctionOn);
+			resetTarget (BanSwitch);
 			MainGameScript.GameTimeChange (gameTimeBonus);
 
 		}
 		//驗證是否超過目標數
 		if (ScoreScript.CurrentPoint != 0 && (targetPoint < ScoreScript.CurrentPoint) ) {	//不為0 且 爆掉了
-			resetTarget (isBannedFunctionOn);
+			resetTarget (BanSwitch);
 			fade ();//爆掉提示
 			MainGameScript.GameTimeChange(gameTimeDeduct);
 		}
 		//驗證是否採到禁止數
-		if (isBannedFunctionOn) {//禁數模式開啟
+		if (BanSwitch) {//禁數模式開啟
 			if (isBanned(ScoreScript.CurrentPoint,bannedMode) ) { //踩到禁數 
-				resetTarget (isBannedFunctionOn);
+				resetTarget (BanSwitch);
 				fade ();//爆掉提示
 				MainGameScript.GameTimeChange(gameTimeDeduct);
 			}

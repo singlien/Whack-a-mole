@@ -2,12 +2,13 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class GameOverControl : MonoBehaviour {
+public class GameStatusControl : MonoBehaviour {
 
 	private MainGameScript mainGame;
 
 	public Button returnButton;
 	public Image gameOverImg;
+	public GameObject pauseButton;
 
 	// Use this for initialization
 	void Start () {
@@ -17,6 +18,9 @@ public class GameOverControl : MonoBehaviour {
 			Debug.LogError ("Unable to load MainGameScript");
 		}
 
+		pauseButton = GameObject.Find ("PauseMenu").gameObject;
+
+		pauseButton.SetActive (false);
 		gameOverImg.gameObject.SetActive (false);
 		returnButton.gameObject.SetActive (false);
 	}
@@ -26,6 +30,12 @@ public class GameOverControl : MonoBehaviour {
 		if (mainGame.GameEnd) {
 			GameOverFunc ();
 		}
+
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			print ("Escape pressed");
+			OnPause ();
+		}
+			
 	}
 
 
@@ -38,5 +48,23 @@ public class GameOverControl : MonoBehaviour {
 	public void ReturnButtonPress(){
 		Debug.Log ("Button Pressed. Return to menu");
 		UnityEngine.SceneManagement.SceneManager.LoadScene ("Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
+	}
+
+	private void OnPause(){
+		print ("Game Paused");
+		Time.timeScale = 0;
+		pauseButton.SetActive (true);
+	}
+	private void OnResume(){
+		print ("Game Resume");
+		Time.timeScale = 1;
+		pauseButton.SetActive (false);
+	}
+	private void OnRestart(){
+		print ("Reload Level");
+	}
+	private void OnQuit(){
+		print ("Quit Game");
+		mainGame.GameEnd = true;
 	}
 }

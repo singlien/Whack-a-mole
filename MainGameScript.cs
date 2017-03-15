@@ -12,7 +12,11 @@ public class MainGameScript : MonoBehaviour
 		get {
 			return gameEnd;
 		}
+		set {
+			gameEnd = value;
+		}
 	}
+
 
 	public float hitTimeLimit = 5f;
 	public Vector2 TimeWaitBeforeInstaniate = new Vector2 (5f, 1000f);
@@ -103,7 +107,7 @@ public class MainGameScript : MonoBehaviour
 //			print ("Gameover");
 			gameEnd = true;
 		} else {
-			timeDisplay.text = "Time Left:"+(int)timeLeft+"s";
+			timeDisplay.text = ((int)timeLeft).ToString();
 		}
 
 

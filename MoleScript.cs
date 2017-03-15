@@ -18,6 +18,7 @@ public class MoleScript : MonoBehaviour
 	private float transformY;
 	private int molePoint = 0; 			// point on mole body
 	private int moleType = -1;			// Select the mole
+	private string spriteType;
 
 	// To enable to hit
 	private bool isActivate;
@@ -48,7 +49,8 @@ public class MoleScript : MonoBehaviour
 
 		sprite[moleType].gameObject.SetActive (true);
 		isWhacked = false;
-		sprite[moleType].SetSprite("Mole_Normal");
+		spriteType = "monster"+(type+1);
+		sprite[moleType].SetSprite(spriteType);
 		timeLimit = tl;
 		//Set points on mole
 		molePoint = mp;
@@ -180,7 +182,8 @@ public class MoleScript : MonoBehaviour
 	public void Whack()
 	{
 		isWhacked = true;
-		sprite[moleType].SetSprite("Mole_Hit");
+		spriteType +="hit";
+		sprite[moleType].SetSprite(spriteType);
 		//打爆之後可以在此處讓數字消失
 	}
 		
