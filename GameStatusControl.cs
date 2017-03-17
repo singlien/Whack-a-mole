@@ -5,10 +5,22 @@ using UnityEngine.UI;
 public class GameStatusControl : MonoBehaviour {
 
 	private MainGameScript mainGame;
+	private static bool isPaused;
+	private bool isBGMMute;
+	private bool isSFXMute;
 
-	public Button returnButton;
-	public Image gameOverImg;
-	public GameObject pauseButton;
+	public static bool IsPaused {
+		get {
+			return isPaused;
+		}
+	}
+
+//	public Button returnButton;
+//	public Image gameOverImg;
+	public GameObject pauseButtonMenu;
+	public GameObject StartInstruction;
+	public tk2dTextMesh FinalScore;
+	public tk2dSprite gameOverScreen;
 
 	// Use this for initialization
 	void Start () {
@@ -17,12 +29,14 @@ public class GameStatusControl : MonoBehaviour {
 		if (mainGame == null) {
 			Debug.LogError ("Unable to load MainGameScript");
 		}
+			
+		pauseButtonMenu.SetActive (false);
+		gameOverScreen.gameObject.SetActive (false);
+		StartInstruction.SetActive (true);
 
-		pauseButton = GameObject.Find ("PauseMenu").gameObject;
-
-		pauseButton.SetActive (false);
-		gameOverImg.gameObject.SetActive (false);
-		returnButton.gameObject.SetActive (false);
+		// Show Start Instruction and pause game on default.
+		Time.timeScale = 0f;
+		isPaused = true;
 	}
 	
 	// Update is called once per frame
@@ -39,32 +53,101 @@ public class GameStatusControl : MonoBehaviour {
 	}
 
 
-	private void GameOverFunc(){
-		gameOverImg.GetComponentInChildren<Text> ().text = "Score: " + ScoreScript.Score;
-		gameOverImg.gameObject.SetActive (true);
-		returnButton.gameObject.SetActive (true);
+	void GameOverFunc(){
+		FinalScore.text = "Score: " + ScoreScript.Score;
+		gameOverScreen.gameObject.SetActive (true);
+//		returnButton.gameObject.SetActive (true);
+		chooseMode.setDifficulty=0;
 	}
 
-	public void ReturnButtonPress(){
-		Debug.Log ("Button Pressed. Return to menu");
+	// Start Instruction Function
+	void OnGameStart(){
+		StartInstruction.SetActive (false);
+		OnResume ();
+	}
+
+	// Pause Menu Function
+	void ReturnButtonPress(){
+		Debug.Log ("ReturnButton Pressed. Return to menu");
 		UnityEngine.SceneManagement.SceneManager.LoadScene ("Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
 	}
 
-	private void OnPause(){
+	void ChangePictureWhenPress(tk2dUIItem who){
+		string spriteName = who.gameObject.GetComponentInChildren<tk2dSprite> ().GetCurrentSpriteDef().name;
+		who.gameObject.GetComponentInChildren<tk2dSprite> ().SetSprite (spriteName + "hit");
+		who.gameObject.GetComponentInChildren<tk2dTextMesh> ().text = "";
+	}
+
+	void OnPause(){
 		print ("Game Paused");
 		Time.timeScale = 0;
-		pauseButton.SetActive (true);
+		isPaused = true;
+		pauseButtonMenu.SetActive (true);
 	}
-	private void OnResume(){
+	void OnResume(){
 		print ("Game Resume");
 		Time.timeScale = 1;
-		pauseButton.SetActive (false);
+		isPaused = false;
+		pauseButtonMenu.SetActive (false);
 	}
-	private void OnRestart(){
+	void OnSettings(){
+		print ("Enter settings");
+		for (int i = 0; i < 4; i++) {
+			pauseButtonMenu.transform.GetChild (i).gameObject.SetActive (false);
+		}
+		for (int i = 4; i < pauseButtonMenu.transform.childCount; i++) {
+			pauseButtonMenu.transform.GetChild (i).gameObject.SetActive (true);
+		}
+	
+	}
+		// Settings Option Function
+	void OnGoPressed(){
+		print ("Return to pause menu");
+		for (int i = 0; i < 4; i++) {
+			pauseButtonMenu.transform.GetChild (i).gameObject.SetActive (true);
+		}		
+		for (int i = 4; i < pauseButtonMenu.transform.childCount; i++) {
+			pauseButtonMenu.transform.GetChild (i).gameObject.SetActive (false);
+		}
+	}
+	void OnMuteSFX(tk2dUIItem w){
+		if (isSFXMute) {
+			print ("SFX Unmute");
+			isSFXMute = false;
+		} else {
+			print("SFX mute");
+			isSFXMute = true;
+		}
+		VolumnIconChange (w);
+	}
+	void OnMuteBGM(tk2dUIItem w){
+		if (isBGMMute) {
+			print ("BGM Unmute");
+			isBGMMute = false;
+		} else {
+			print("BGM mute");
+			isBGMMute = true;
+		}
+
+		VolumnIconChange (w);
+	}
+	void VolumnIconChange(tk2dUIItem who){//Y=0, N=3
+		if (who.GetComponent<tk2dSprite> ().spriteId == 0)
+			who.GetComponent<tk2dSprite> ().spriteId = 3;
+		else if (who.GetComponent<tk2dSprite> ().spriteId == 3)
+			who.GetComponent<tk2dSprite> ().spriteId = 0;
+		else
+			Debug.LogError ("Unknown Volume icon");
+
+	}
+	void OnRestart(){
 		print ("Reload Level");
+		UnityEngine.SceneManagement.SceneManager.LoadScene (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name);
+		isPaused = false;
 	}
-	private void OnQuit(){
+	void OnQuit(){
 		print ("Quit Game");
 		mainGame.GameEnd = true;
 	}
 }
+	

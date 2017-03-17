@@ -25,7 +25,8 @@ public class MainGameScript : MonoBehaviour
 	public tk2dSpriteAnimator dustAnimator;
 	public AudioClip moleHit;
 	public tk2dTextMesh timeDisplay;
-	public static int gameTime = 120;
+	public int setGameTime = 120;
+	public static int gameTime;
 
 	private PointGenerator pointGenerator;
 
@@ -52,6 +53,7 @@ public class MainGameScript : MonoBehaviour
 		if (pointGenerator == null) {
 			Debug.LogWarning ("Did not fount Point Generator");
 		}
+		gameTime = setGameTime;
 	}
 	
 	IEnumerator Start () 
@@ -81,7 +83,7 @@ public class MainGameScript : MonoBehaviour
 	void Update()
 	{
 		// Check to see if mouse has been clicked, and if so check to see if it has 'hit' any of the moles, and check which mole.
-		if(Input.GetButtonDown ("Fire1") && !gameEnd)
+		if(Input.GetButtonDown ("Fire1") && !gameEnd && !GameStatusControl.IsPaused)
 		{
 			Ray ray = gameCam.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit = new RaycastHit();

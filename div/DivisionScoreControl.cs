@@ -35,7 +35,7 @@ public class DivisionScoreControl : ScoreControlAbstract {
 		if(targetDisplay==null){
 			Debug.Log ("Unable Locate targetText");
 		}else
-			targetDisplay.text = "Target: 1";
+			targetDisplay.text = "1";
 
 		//讓遊戲分數歸零
 		ScoreScript.Score = 0;
@@ -49,8 +49,8 @@ public class DivisionScoreControl : ScoreControlAbstract {
 	void Update () {
 		
 		//遊戲進行中不斷Update目前數字
-		currentDisplay.text = string.Format("Now: {0}" , ScoreScript.CurrentPoint);
-		scoreDisplay.text = string.Format("Score: {0}", ScoreScript.Score);
+		currentDisplay.text = string.Format("{0}" , ScoreScript.CurrentPoint);
+		scoreDisplay.text = string.Format("{0}", ScoreScript.Score);
 		scoreDisplay.Commit();
 
 		//得分

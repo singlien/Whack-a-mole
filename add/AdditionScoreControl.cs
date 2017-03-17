@@ -5,13 +5,13 @@ public class AdditionScoreControl : ScoreControlAbstract {
 
 	//文字顯示繼承ScoreControlAbstract
 
-	public bool bannedMode;	//禁止數模式選擇 true:每一位禁止 false:尾數禁止
+	//禁止數模式開關 true=開啟 false=關閉
+	public bool BanSwitch = false;
 
 	public Vector2 targetMinMax = new Vector2 (50f, 100f);
 	public Vector2 bannedMinMax = new Vector2 (50f, 100f);
 
-	//禁止數模式開關 true=開啟 false=關閉
-	public bool BanSwitch = false;		
+	public bool bannedMode;	//禁止數模式選擇 true:每一位禁止 false:尾數禁止
 
 //	private int targetPoint;
 	private char[] bannedArray;
@@ -20,15 +20,20 @@ public class AdditionScoreControl : ScoreControlAbstract {
 
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 	
 		bannedDisplay.text = "";
 
 		//重設點數目標及禁數
-		resetTarget(BanSwitch);
+		do {
+			resetTarget (BanSwitch);
+		} while(BanSwitch && isBanned (ScoreScript.CurrentPoint, bannedMode));
 
 		//讓遊戲分數歸零
 		ScoreScript.Score = 0;
+
+		//選擇ScoreSprite
+		changeScoreSprite();
 
 	}
 	
@@ -36,8 +41,8 @@ public class AdditionScoreControl : ScoreControlAbstract {
 	void Update () {
 		
 		//遊戲進行中不斷Update目前數字
-		currentDisplay.text = string.Format("Now: {0}" , ScoreScript.CurrentPoint);
-		scoreDisplay.text = string.Format("Score: {0}", ScoreScript.Score);
+		currentDisplay.text = string.Format("{0}" , ScoreScript.CurrentPoint);
+		scoreDisplay.text = string.Format("{0}", ScoreScript.Score);
 		scoreDisplay.Commit();
 
 		if (targetPoint == ScoreScript.CurrentPoint) {	//目標點數=現在點數，得分！
@@ -100,7 +105,7 @@ public class AdditionScoreControl : ScoreControlAbstract {
 
 		//讓禁止數顯示在UI上
 			if (!bannedMode) {
-				bannedDisplay.text = "Tail Ban: ";
+				bannedDisplay.text = ""; // Reset
 				for (int i = 0; i < bannedArray.Length - 1; i++) {
 					//ex: "尾數禁止: 0,1,2"
 					bannedDisplay.text += bannedArray [i];
@@ -109,7 +114,7 @@ public class AdditionScoreControl : ScoreControlAbstract {
 				bannedDisplay.text += bannedArray [bannedArray.Length - 1];
 
 			} else {
-				bannedDisplay.text = "EveryNum Ban: ";
+				bannedDisplay.text = "" ; // Reset
 				for (int i = 0; i < bannedArray.Length - 1; i++) {
 					//ex: "任意數禁含: 0,1,2"
 					bannedDisplay.text += bannedArray [i];
@@ -128,7 +133,7 @@ public class AdditionScoreControl : ScoreControlAbstract {
 		}
 
 		//讓目標數顯示在UI上
-		targetDisplay.text = "Target: " + targetPoint;
+		targetDisplay.text = targetPoint.ToString();
 			
 	}
 
@@ -173,5 +178,15 @@ public class AdditionScoreControl : ScoreControlAbstract {
 		return false;
 	}
 
+	private void changeScoreSprite(){// noBan=9, Every=7, Tail=8
+		if (BanSwitch) {
+			if (bannedMode)
+				scoreSprite.spriteId = 7;
+			else
+				scoreSprite.spriteId = 8;
+		}else
+			scoreSprite.spriteId = 9;
+		
+	}
 
 }

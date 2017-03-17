@@ -10,6 +10,7 @@ public abstract class ScoreControlAbstract : MonoBehaviour {
 	public tk2dTextMesh targetDisplay;
 	public tk2dTextMesh currentDisplay;
 	public tk2dTextMesh scoreDisplay;
+	public tk2dSprite scoreSprite;
 
 	public int gameTimeBonus = 10;
 	public int gameTimeDeduct = -5;

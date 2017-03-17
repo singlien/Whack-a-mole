@@ -26,7 +26,10 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 		bannedDisplay.text = "";
 
 		//重設點數目標及禁數
-		resetTarget(BanSwitch);
+		do {
+			resetTarget (BanSwitch);
+		} while(BanSwitch && isBanned (ScoreScript.CurrentPoint, bannedMode));
+
 
 		//讓遊戲分數歸零
 		ScoreScript.Score = 0;
@@ -37,8 +40,8 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 	void Update () {
 		
 		//遊戲進行中不斷Update目前數字
-		currentDisplay.text = string.Format("Now: {0}" , ScoreScript.CurrentPoint);
-		scoreDisplay.text = string.Format("Score: {0}", ScoreScript.Score);
+		currentDisplay.text = string.Format("{0}" , ScoreScript.CurrentPoint);
+		scoreDisplay.text = string.Format("{0}", ScoreScript.Score);
 		scoreDisplay.Commit();
 
 		//驗證得分
@@ -114,7 +117,7 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 
 			//讓禁止數顯示在UI上
 			if (!bannedMode) {
-				bannedDisplay.text = "Tail Ban: ";
+				bannedDisplay.text = ""; //Reset
 				for (int i = 0; i < bannedArray.Length - 1; i++) {
 					//ex: "尾數禁止: 0,1,2"
 					bannedDisplay.text += bannedArray [i];
@@ -123,7 +126,7 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 				bannedDisplay.text += bannedArray [bannedArray.Length - 1];
 
 			} else {
-				bannedDisplay.text = "EverNum Ban: ";
+				bannedDisplay.text = ""; //Reset
 				for (int i = 0; i < bannedArray.Length - 1; i++) {
 					//ex: "任意數禁含: 0,1,2"
 					bannedDisplay.text += bannedArray [i];
@@ -146,7 +149,7 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 		}
 
 		//讓目標數顯示在UI上
-		targetDisplay.text = "Target: " + targetPoint;
+		targetDisplay.text = targetPoint.ToString();
 
 		//註：目前數不用額外顯示，目前數定義後會自動顯示
 
