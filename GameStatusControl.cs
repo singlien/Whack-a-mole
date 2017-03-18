@@ -8,6 +8,7 @@ public class GameStatusControl : MonoBehaviour {
 	private static bool isPaused;
 	private bool isBGMMute;
 	private bool isSFXMute;
+	bool playOnce = true;
 
 	public static bool IsPaused {
 		get {
@@ -17,10 +18,11 @@ public class GameStatusControl : MonoBehaviour {
 
 //	public Button returnButton;
 //	public Image gameOverImg;
-	public GameObject pauseButtonMenu;
+	public GameObject pauseMenu;
 	public GameObject StartInstruction;
 	public tk2dTextMesh FinalScore;
 	public tk2dSprite gameOverScreen;
+	public AudioClip endSound;
 
 	// Use this for initialization
 	void Start () {
@@ -29,8 +31,8 @@ public class GameStatusControl : MonoBehaviour {
 		if (mainGame == null) {
 			Debug.LogError ("Unable to load MainGameScript");
 		}
-			
-		pauseButtonMenu.SetActive (false);
+
+		pauseMenu.SetActive (false);
 		gameOverScreen.gameObject.SetActive (false);
 		StartInstruction.SetActive (true);
 
@@ -42,7 +44,9 @@ public class GameStatusControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (mainGame.GameEnd) {
-			GameOverFunc ();
+			if(playOnce)
+				GameOverFunc ();
+			playOnce = false;
 		}
 
 		if (Input.GetKeyDown (KeyCode.Escape)) {
@@ -55,6 +59,7 @@ public class GameStatusControl : MonoBehaviour {
 
 	void GameOverFunc(){
 		FinalScore.text = "Score: " + ScoreScript.Score;
+		AudioSource.PlayClipAtPoint (endSound, new Vector3 ());
 		gameOverScreen.gameObject.SetActive (true);
 //		returnButton.gameObject.SetActive (true);
 		chooseMode.setDifficulty=0;
@@ -82,21 +87,21 @@ public class GameStatusControl : MonoBehaviour {
 		print ("Game Paused");
 		Time.timeScale = 0;
 		isPaused = true;
-		pauseButtonMenu.SetActive (true);
+		pauseMenu.SetActive (true);
 	}
 	void OnResume(){
 		print ("Game Resume");
 		Time.timeScale = 1;
 		isPaused = false;
-		pauseButtonMenu.SetActive (false);
+		pauseMenu.SetActive (false);
 	}
 	void OnSettings(){
 		print ("Enter settings");
 		for (int i = 0; i < 4; i++) {
-			pauseButtonMenu.transform.GetChild (i).gameObject.SetActive (false);
+			pauseMenu.transform.GetChild (i).gameObject.SetActive (false);
 		}
-		for (int i = 4; i < pauseButtonMenu.transform.childCount; i++) {
-			pauseButtonMenu.transform.GetChild (i).gameObject.SetActive (true);
+		for (int i = 4; i < pauseMenu.transform.childCount; i++) {
+			pauseMenu.transform.GetChild (i).gameObject.SetActive (true);
 		}
 	
 	}
@@ -104,10 +109,10 @@ public class GameStatusControl : MonoBehaviour {
 	void OnGoPressed(){
 		print ("Return to pause menu");
 		for (int i = 0; i < 4; i++) {
-			pauseButtonMenu.transform.GetChild (i).gameObject.SetActive (true);
+			pauseMenu.transform.GetChild (i).gameObject.SetActive (true);
 		}		
-		for (int i = 4; i < pauseButtonMenu.transform.childCount; i++) {
-			pauseButtonMenu.transform.GetChild (i).gameObject.SetActive (false);
+		for (int i = 4; i < pauseMenu.transform.childCount; i++) {
+			pauseMenu.transform.GetChild (i).gameObject.SetActive (false);
 		}
 	}
 	void OnMuteSFX(tk2dUIItem w){

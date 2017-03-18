@@ -80,7 +80,7 @@ public class AdditionPointGenerator : PointGenerator  {
 
 	private int typeChooser(){
 		float range = Random.value;
-		Debug.Log (range);
+//		Debug.Log (range);
 
 		if (0f <= range && range <= sumArray [0]) {//0~.5
 			return 0;

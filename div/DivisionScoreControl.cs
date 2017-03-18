@@ -23,8 +23,8 @@ public class DivisionScoreControl : ScoreControlAbstract {
 	void Start () {
 		
 		//Debug:所有開關ON -> 一定要開 不然會當掉
-		for (int i = 0; i < indexOnOff.Length; i++)
-			indexOnOff [i] = true;
+//		for (int i = 0; i < indexOnOff.Length; i++)
+//			indexOnOff [i] = true;
 		//Debug----------
 
 

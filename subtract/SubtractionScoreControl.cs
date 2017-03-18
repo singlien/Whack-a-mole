@@ -21,7 +21,7 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 
 		bannedDisplay.text = "";
 
@@ -33,6 +33,9 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 
 		//讓遊戲分數歸零
 		ScoreScript.Score = 0;
+
+		//選擇ScoreSprite
+		changeScoreSprite();
 
 	}
 
@@ -194,5 +197,15 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 			}
 		}
 		return false;
+	}
+
+	private void changeScoreSprite(){// None=3, Every=0, Tail=4
+		if (BanSwitch) {
+			if (bannedMode)
+				scoreSprite.spriteId = 0;// Every
+			else
+				scoreSprite.spriteId = 4;// Tail
+		}else
+			scoreSprite.spriteId = 3;// None
 	}
 }

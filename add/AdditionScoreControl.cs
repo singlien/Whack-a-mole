@@ -178,15 +178,14 @@ public class AdditionScoreControl : ScoreControlAbstract {
 		return false;
 	}
 
-	private void changeScoreSprite(){// noBan=9, Every=7, Tail=8
+	private void changeScoreSprite(){// None=3, Every=0, Tail=4
 		if (BanSwitch) {
 			if (bannedMode)
-				scoreSprite.spriteId = 7;
+				scoreSprite.spriteId = 0;// Every
 			else
-				scoreSprite.spriteId = 8;
+				scoreSprite.spriteId = 4;// Tail
 		}else
-			scoreSprite.spriteId = 9;
-		
+			scoreSprite.spriteId = 3;// None
 	}
 
 }

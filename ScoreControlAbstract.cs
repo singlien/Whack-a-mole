@@ -25,13 +25,32 @@ public abstract class ScoreControlAbstract : MonoBehaviour {
 			return targetPoint;
 		}
 	}
-
-
+		
+//	// Vibrate function
+//	#if UNITY_ANDROID
+//	AndroidJavaObject v;
+//
+//	void Start () {
+//		using(AndroidJavaClass p = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
+//			using(AndroidJavaObject a = p.GetStatic<AndroidJavaObject>("currentActivity")) {
+//				v = a.Call<AndroidJavaObject>("getSystemService", "vibrator");
+//			}
+//		}
+//	}
+//
+//	void Vibrate(long time){ // 此部分要單獨寫成方法(函式)，不可單獨呼叫
+//		v.Call("vibrate", time);
+//	}
+//	#endif
 
 	protected void fade()
 	{
 		fadeImage.color = Color.red;
 		StartCoroutine (recoverLoop ());
+
+//		#if UNITY_ANDROID
+//		Vibrate(150);	// 控制震動時長1/1000s
+//		#endif
 	}
 
 	private IEnumerator recoverLoop()
