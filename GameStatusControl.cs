@@ -6,8 +6,7 @@ public class GameStatusControl : MonoBehaviour {
 
 	private MainGameScript mainGame;
 	private static bool isPaused;
-	private bool isBGMMute;
-	private bool isSFXMute;
+
 	bool playOnce = true;
 
 	public static bool IsPaused {
@@ -23,6 +22,10 @@ public class GameStatusControl : MonoBehaviour {
 	public tk2dTextMesh FinalScore;
 	public tk2dSprite gameOverScreen;
 	public AudioClip endSound;
+
+	float time;
+	public float exitTime = 1f;
+	int count;
 
 	// Use this for initialization
 	void Start () {
@@ -54,13 +57,33 @@ public class GameStatusControl : MonoBehaviour {
 			OnPause ();
 		}
 			
+			// Double tab to escape
+			time += Time.deltaTime;
+			if (Input.GetKeyDown (KeyCode.Escape)) 
+			{
+				count++;
+				if (time <= exitTime && count == 2) {
+					Application.Quit ();
+					#if UNITY_EDITOR
+					UnityEditor.EditorApplication.isPlaying=false;
+					#endif
+				}
+				time = 0f;
+			}
+			if (time > exitTime)
+				count = 0;
+
 	}
 
 
 	void GameOverFunc(){
 		FinalScore.text = "Score: " + ScoreScript.Score;
-		AudioSource.PlayClipAtPoint (endSound, new Vector3 ());
+		if (SettingsScript.IsBGMMute)
+			AudioSource.PlayClipAtPoint (endSound, new Vector3 (), 0f);
+		else
+			AudioSource.PlayClipAtPoint (endSound, new Vector3 (), 1f);
 		gameOverScreen.gameObject.SetActive (true);
+		GameObject.Find ("GameBGM").GetComponent<AudioSource> ().Pause ();
 //		returnButton.gameObject.SetActive (true);
 		chooseMode.setDifficulty=0;
 	}
@@ -105,7 +128,7 @@ public class GameStatusControl : MonoBehaviour {
 		}
 	
 	}
-		// Settings Option Function
+	// Settings Option Function
 	void OnGoPressed(){
 		print ("Return to pause menu");
 		for (int i = 0; i < 4; i++) {
@@ -114,36 +137,6 @@ public class GameStatusControl : MonoBehaviour {
 		for (int i = 4; i < pauseMenu.transform.childCount; i++) {
 			pauseMenu.transform.GetChild (i).gameObject.SetActive (false);
 		}
-	}
-	void OnMuteSFX(tk2dUIItem w){
-		if (isSFXMute) {
-			print ("SFX Unmute");
-			isSFXMute = false;
-		} else {
-			print("SFX mute");
-			isSFXMute = true;
-		}
-		VolumnIconChange (w);
-	}
-	void OnMuteBGM(tk2dUIItem w){
-		if (isBGMMute) {
-			print ("BGM Unmute");
-			isBGMMute = false;
-		} else {
-			print("BGM mute");
-			isBGMMute = true;
-		}
-
-		VolumnIconChange (w);
-	}
-	void VolumnIconChange(tk2dUIItem who){//Y=0, N=3
-		if (who.GetComponent<tk2dSprite> ().spriteId == 0)
-			who.GetComponent<tk2dSprite> ().spriteId = 3;
-		else if (who.GetComponent<tk2dSprite> ().spriteId == 3)
-			who.GetComponent<tk2dSprite> ().spriteId = 0;
-		else
-			Debug.LogError ("Unknown Volume icon");
-
 	}
 	void OnRestart(){
 		print ("Reload Level");
