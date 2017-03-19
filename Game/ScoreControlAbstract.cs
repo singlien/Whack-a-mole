@@ -18,6 +18,14 @@ public abstract class ScoreControlAbstract : MonoBehaviour {
 	public Image fadeImage;
 	public float fadeTime = 10f;
 
+	protected int fadeCount = 0;
+
+	public int FadeCount {
+		get {
+			return fadeCount;
+		}
+	}
+
 	protected int targetPoint;
 
 	public int TargetPoint {
@@ -47,6 +55,7 @@ public abstract class ScoreControlAbstract : MonoBehaviour {
 	{
 		fadeImage.color = Color.red;
 		StartCoroutine (recoverLoop ());
+		fadeCount++;
 
 //		#if UNITY_ANDROID
 //		Vibrate(150);	// 控制震動時長1/1000s

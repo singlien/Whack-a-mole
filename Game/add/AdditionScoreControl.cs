@@ -16,9 +16,6 @@ public class AdditionScoreControl : ScoreControlAbstract {
 //	private int targetPoint;
 	private char[] bannedArray;
 
-
-
-
 	// Use this for initialization
 	void Start () {
 	

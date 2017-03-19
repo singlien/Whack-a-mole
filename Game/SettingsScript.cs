@@ -41,13 +41,13 @@ public class SettingsScript : MonoBehaviour {
 	}
 	void OnMuteSFX(tk2dUIItem who){
 		if (isSFXMute) {
-			print ("SFX Unmute");
+//			print ("SFX Unmute");
 			isSFXMute = false;
 			who.GetComponent<tk2dSprite> ().spriteId = 0;
 			GameObject.Find ("tk2dUIAudioManager").GetComponent<AudioSource> ().volume = 1;
 
 		} else {
-			print("SFX mute");
+//			print("SFX mute");
 			isSFXMute = true;
 			who.GetComponent<tk2dSprite> ().spriteId = 3;
 			GameObject.Find ("tk2dUIAudioManager").GetComponent<AudioSource> ().volume = 0;
@@ -55,13 +55,13 @@ public class SettingsScript : MonoBehaviour {
 	}
 	void OnMuteBGM(tk2dUIItem who){
 		if (isBGMMute) {
-			print ("BGM Unmute");
+//			print ("BGM Unmute");
 			isBGMMute = false;
 			who.GetComponent<tk2dSprite> ().spriteId = 0;
 			GameObject.Find ("GameBGM").GetComponent<AudioSource> ().volume = 1;
 
 		} else {
-			print("BGM mute");
+//			print("BGM mute");
 			isBGMMute = true;
 			who.GetComponent<tk2dSprite> ().spriteId = 3;
 			GameObject.Find ("GameBGM").GetComponent<AudioSource> ().volume = 0;

@@ -53,7 +53,7 @@ public class GameStatusControl : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown (KeyCode.Escape)) {
-			print ("Escape pressed");
+//			print ("Escape pressed");
 			OnPause ();
 		}
 			
@@ -86,6 +86,9 @@ public class GameStatusControl : MonoBehaviour {
 		GameObject.Find ("GameBGM").GetComponent<AudioSource> ().Pause ();
 //		returnButton.gameObject.SetActive (true);
 		chooseMode.setDifficulty=0;
+
+		// Show fade times
+		print("Fade Times:"+gameObject.GetComponent<ScoreControlAbstract>().FadeCount);
 	}
 
 	// Start Instruction Function
@@ -96,7 +99,7 @@ public class GameStatusControl : MonoBehaviour {
 
 	// Pause Menu Function
 	void ReturnButtonPress(){
-		Debug.Log ("ReturnButton Pressed. Return to menu");
+//		Debug.Log ("ReturnButton Pressed. Return to menu");
 		UnityEngine.SceneManagement.SceneManager.LoadScene ("Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
 	}
 
@@ -107,19 +110,19 @@ public class GameStatusControl : MonoBehaviour {
 	}
 
 	void OnPause(){
-		print ("Game Paused");
+//		print ("Game Paused");
 		Time.timeScale = 0;
 		isPaused = true;
 		pauseMenu.SetActive (true);
 	}
 	void OnResume(){
-		print ("Game Resume");
+//		print ("Game Resume");
 		Time.timeScale = 1;
 		isPaused = false;
 		pauseMenu.SetActive (false);
 	}
 	void OnSettings(){
-		print ("Enter settings");
+//		print ("Enter settings");
 		for (int i = 0; i < 4; i++) {
 			pauseMenu.transform.GetChild (i).gameObject.SetActive (false);
 		}
@@ -130,7 +133,7 @@ public class GameStatusControl : MonoBehaviour {
 	}
 	// Settings Option Function
 	void OnGoPressed(){
-		print ("Return to pause menu");
+//		print ("Return to pause menu");
 		for (int i = 0; i < 4; i++) {
 			pauseMenu.transform.GetChild (i).gameObject.SetActive (true);
 		}		
@@ -139,12 +142,12 @@ public class GameStatusControl : MonoBehaviour {
 		}
 	}
 	void OnRestart(){
-		print ("Reload Level");
+//		print ("Reload Level");
 		UnityEngine.SceneManagement.SceneManager.LoadScene (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().name);
 		isPaused = false;
 	}
 	void OnQuit(){
-		print ("Quit Game");
+//		print ("Quit Game");
 		mainGame.GameEnd = true;
 	}
 }

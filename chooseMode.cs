@@ -46,8 +46,12 @@ public class chooseMode : MonoBehaviour {
 				#endif
 			}
 			time = 0f;
-			if(!startMenu.gameObject.activeSelf)
-				ReturnToTaptoStartScreen ();
+			if (!startMenu.gameObject.activeSelf) {
+				if (planet.gameObject.activeSelf)
+					ReturnToTaptoStartScreen ();
+				else
+					ReturnButtonPressed ();
+			}
 		}
 		if (time > exitTime)
 			count = 0;
@@ -57,15 +61,15 @@ public class chooseMode : MonoBehaviour {
 		switch (called.name) {
 
 		case "map3-1":
-			print ("map3-1 clicked, Hard");
+//			print ("map3-1 clicked, Hard");
 			setDifficulty = 1;
 			break;
 		case "map3-2":
-			print ("map3-2 clicked, Medium");
+//			print ("map3-2 clicked, Medium");
 			setDifficulty = 2;
 			break;
 		case "map3-3":
-			print ("map3-3 clicked, Easy");
+//			print ("map3-3 clicked, Easy");
 			setDifficulty = 3;
 			break;
 		default:
@@ -83,15 +87,15 @@ public class chooseMode : MonoBehaviour {
 		switch (called.name) {
 
 		case "map4-1":
-			print ("map4-1 clicked, Hard");
+//			print ("map4-1 clicked, Hard");
 			setDifficulty = 1;
 			break;
 		case "map4-2":
-			print ("map4-2 clicked, Medium");
+//			print ("map4-2 clicked, Medium");
 			setDifficulty = 2;
 			break;
 		case "map4-3":
-			print ("map4-3 clicked, Easy");
+//			print ("map4-3 clicked, Easy");
 			setDifficulty = 3;
 			break;
 		default:
@@ -107,15 +111,15 @@ public class chooseMode : MonoBehaviour {
 		switch (called.name) {
 
 		case "map6-1":
-			print ("map6-1 clicked, Hard");
+//			print ("map6-1 clicked, Hard");
 			setDifficulty = 1;
 			break;
 		case "map6-2":
-			print ("map6-2 clicked, Medium");
+//			print ("map6-2 clicked, Medium");
 			setDifficulty = 2;
 			break;
 		case "map6-3":
-			print ("map6-3 clicked, Easy");
+//			print ("map6-3 clicked, Easy");
 			setDifficulty = 3;
 			break;
 		default:
