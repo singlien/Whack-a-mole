@@ -49,6 +49,8 @@ public class AdditionScoreControl : ScoreControlAbstract {
 			ScoreScript.CurrentPoint = 0;
 			resetTarget (BanSwitch);
 			MainGameScript.GameTimeChange (gameTimeBonus);
+			if (!SettingsScript.IsSFXMute)
+				AudioSource.PlayClipAtPoint (getScore, new Vector3 (), 1f);
 
 		}
 		//驗證是否超過目標數

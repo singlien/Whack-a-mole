@@ -94,9 +94,7 @@ public class MainGameScript : MonoBehaviour
 				{
 					if(mole.IsActivate && mole.ColliderTransform == hit.transform)
 					{
-						if (SettingsScript.IsSFXMute)
-							AudioSource.PlayClipAtPoint (moleHit, new Vector3 (), 0f);
-						else
+						if (!SettingsScript.IsSFXMute)
 							AudioSource.PlayClipAtPoint (moleHit, new Vector3 (), 1f);
 						ScoreScript.HitPoint = mole.MolePoint;
 						mole.Whack();

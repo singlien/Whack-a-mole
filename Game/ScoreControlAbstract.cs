@@ -12,6 +12,8 @@ public abstract class ScoreControlAbstract : MonoBehaviour {
 	public tk2dTextMesh scoreDisplay;
 	public tk2dSprite scoreSprite;
 
+	public AudioClip getScore;
+
 	public int gameTimeBonus = 10;
 	public int gameTimeDeduct = -5;
 

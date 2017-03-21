@@ -62,7 +62,7 @@ public class GameStatusControl : MonoBehaviour {
 			if (Input.GetKeyDown (KeyCode.Escape)) 
 			{
 				count++;
-				if (time <= exitTime && count == 2) {
+				if (time <= exitTime && count == 2) { // End game
 					Application.Quit ();
 					#if UNITY_EDITOR
 					UnityEditor.EditorApplication.isPlaying=false;
