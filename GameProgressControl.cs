@@ -8,6 +8,7 @@ public class GameProgressControl : MonoBehaviour {
 	Transform mapSub;
 	Transform mapDiv;
 
+
 	bool[] addProgress = new bool[3];	// Hard, Medium, Easy
 	bool[] subProgress = new bool[3];
 	bool[] divProgress = new bool[3];
@@ -31,7 +32,6 @@ public class GameProgressControl : MonoBehaviour {
 		}
 
 		SetProgress ();
-
 	}
 
 	void SetProgress(){
@@ -56,4 +56,3 @@ public class GameProgressControl : MonoBehaviour {
 			divProgress [k] = divCurrentProgress [k];
 	}
 }
-	
