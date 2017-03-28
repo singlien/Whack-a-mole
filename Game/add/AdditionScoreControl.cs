@@ -86,21 +86,20 @@ public class AdditionScoreControl : ScoreControlAbstract {
 		ScoreScript.CurrentPoint = 0;
 
 		//判斷禁止模式是否開啟，產生禁止數及目標數
-		if (isBannedOn) {//-->禁止數模式開啟
+		if (isBannedOn) //-->禁止數模式開啟
+		{
+
+			//隨機產生一個目標數
+			targetPoint = (int)Random.Range (targetMinMax.x, targetMinMax.y);
 
 			//隨機產生一個禁止數
 			do {
 				bannedNum = (int)Random.Range (bannedMinMax.x, bannedMinMax.y);
 				bannedArray = bannedNum.ToString ().ToCharArray ();
-			} while(isLegalBannedNumber(bannedArray));	//驗證禁止數是否符合規則，不符合則重新產生
+			} while(isLegalBannedNumber(bannedArray) || isBanned(targetPoint,bannedMode));	//驗證禁止數是否符合規則，不符合則重新產生
 
 			//排序禁止數資料
 			System.Array.Sort(bannedArray);
-
-			//隨機產生一個目標數
-			do {
-				targetPoint = (int)Random.Range (targetMinMax.x, targetMinMax.y);
-			} while(isBanned (targetPoint, bannedMode)); //驗證目標數不能被禁止，不符合則重新產生
 
 		//讓禁止數顯示在UI上
 			if (!bannedMode) {
@@ -123,23 +122,22 @@ public class AdditionScoreControl : ScoreControlAbstract {
 			}
 
 
-		} else {
+		} else 
+		{
 			//隨機產生一個目標數
 			targetPoint = (int)Random.Range (targetMinMax.x, targetMinMax.y);
 			//顯示在UI上
 			bannedDisplay.text = "";
 
 		}
-
 		//讓目標數顯示在UI上
 		targetDisplay.text = targetPoint.ToString();
-			
 	}
 
 	bool isLegalBannedNumber(char[] inputArr){
 		//判斷bannedNumber不可以有相同數字
-
 		//true為ban中有相同的數字, false為ban中沒相同的數字
+
 		for (int i = 0; i < (inputArr.Length - 1); i++) {
 			for (int j = (i + 1); j < inputArr.Length; j++) {
 				if (inputArr [i] == inputArr [j])
@@ -186,5 +184,4 @@ public class AdditionScoreControl : ScoreControlAbstract {
 		}else
 			scoreSprite.spriteId = 3;// None
 	}
-
 }

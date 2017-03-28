@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+//using System.Collections.Generic;
 
 public class SubtractionScoreControl : ScoreControlAbstract {
 
@@ -17,6 +18,14 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 	// targetPoint 繼承自ScoreControlAbstract
 //	private int currentPoint;
 	private char[] bannedArray;
+
+
+	//Debug
+	List<int> countList = new List<int>();
+	List<int> countTarList = new List<int>();
+	List<int> countBanList = new List<int>();
+	List<int> countDistList = new List<int>();
+
 
 
 
@@ -88,6 +97,11 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 		int bannedNum;
 		int numDistance;		//currentPoint與targetPoint間的數字差異
 
+		//Debug
+//		int count=0;
+//		int countTar=0;
+//		int countBan=0;
+//		int countDist=0;
 
 		//現在數歸0
 		ScoreScript.CurrentPoint = 0;
@@ -95,28 +109,30 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 		//判斷禁止模式是否開啟，產生禁止數及目標數
 		if (isBannedOn) {//-->禁止數模式開啟
 
+			//隨機產生一個目標數
+			targetPoint = (int)Random.Range (targetMinMax.x, targetMinMax.y);
+//			count++;
+//			countTar++;
+
+			//隨機產生一距離數
+			numDistance = (int)Random.Range (distanceMinMax.x, distanceMinMax.y);
+			//產生目前數
+			ScoreScript.CurrentPoint = targetPoint + numDistance;
+
 			//隨機產生一個禁止數
 			do {
 				bannedNum = (int)Random.Range (bannedMinMax.x, bannedMinMax.y);
 				bannedArray = bannedNum.ToString ().ToCharArray ();
-			} while(isLegalBannedNumber(bannedArray));	//驗證禁止數是否符合規則，不符合則重新產生
+//				count++;
+//				countBan++;
+			} while(isLegalBannedNumber (bannedArray) || isBanned (targetPoint, bannedMode));	//驗證禁止數是否符合規則，不符合則重新產生
 
 			//排序禁止數資料
 			System.Array.Sort(bannedArray);
 
-			//隨機產生一個目標數
-			do {
-				targetPoint = (int)Random.Range (targetMinMax.x, targetMinMax.y);
-			} while(isBanned (targetPoint, bannedMode)); //驗證目標數不能被禁止，不符合則重新產生
-
-
-			//隨機產生一距離數
-			do {
-				//產生距離數
-				numDistance = (int)Random.Range (distanceMinMax.x, distanceMinMax.y);
-				//產生目前數
-				ScoreScript.CurrentPoint = targetPoint + numDistance;
-			} while(isBanned (ScoreScript.CurrentPoint, bannedMode));
+//			countList.Add (count);
+//			countTarList.Add (countTar);
+//			countBanList.Add (countBan);
 
 			//讓禁止數顯示在UI上
 			if (!bannedMode) {
@@ -208,4 +224,26 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 		}else
 			scoreSprite.spriteId = 3;// None
 	}
+
+//	void OnDestroy(){
+//		int sumCount = 0;
+//		int sumCountTar = 0;
+//		int sumCountBan = 0;
+//
+//		foreach (int i in countList)
+//			sumCount += i;
+//		foreach (int j in countTarList)
+//			sumCountTar += j;
+//		foreach (int k in countBanList)
+//			sumCountBan += k;
+//
+//		int avgTar = sumCountTar / countTarList.Count;
+//		int avg = sumCount / countList.Count;
+//		int avgBan = sumCountBan / countBanList.Count;
+//
+//		print ("avg:" + avg);
+//		print ("avgTar:" + avgTar);
+//		print ("avgBan:" + avgBan);
+//			
+//	}
 }
