@@ -37,7 +37,7 @@ public class DivisionDifficultyControl : MonoBehaviour {
 		case difficulty.easy:
 			for (int i = 0; i < 4; i++)
 				dsc.indexOnOff [i] = true;
-			dsc.indexAdditionMinMax = new Vector2 (1f, 2f);
+			dsc.indexAdditionMinMax = new Vector2 (2f, 3f);
 			break;
 		case difficulty.normal:
 			for (int i = 0; i < 5; i++)

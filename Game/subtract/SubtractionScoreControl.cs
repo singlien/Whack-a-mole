@@ -21,10 +21,10 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 
 
 	//Debug
-	List<int> countList = new List<int>();
-	List<int> countTarList = new List<int>();
-	List<int> countBanList = new List<int>();
-	List<int> countDistList = new List<int>();
+//	List<int> countList = new List<int>();
+//	List<int> countTarList = new List<int>();
+//	List<int> countBanList = new List<int>();
+//	List<int> countDistList = new List<int>();
 
 
 
