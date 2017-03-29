@@ -12,6 +12,8 @@ public class SubtractionDifficultyControl : MonoBehaviour {
 
 	SubtractionScoreControl ssc;
 
+	public tk2dSprite startInstruction;
+
 	// Use this for initialization
 	void Awake () {
 	
@@ -57,4 +59,22 @@ public class SubtractionDifficultyControl : MonoBehaviour {
 		}
 	}
 
+	void Start(){
+
+		//Set sprite
+		switch(CurrentDifficulty){// H=4, M=5, E=3
+		case difficulty.easy:
+			startInstruction.spriteId = 3;
+			break;
+		case difficulty.normal:
+			startInstruction.spriteId = 5;
+			break;
+		case difficulty.hard:
+			startInstruction.spriteId = 4;
+			break;
+		default:
+			Debug.LogWarning ("Unable to set startInstruction");
+			break;
+		}
+	}
 }

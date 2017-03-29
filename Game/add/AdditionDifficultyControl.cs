@@ -25,6 +25,8 @@ public class AdditionDifficultyControl : MonoBehaviour {
 
 	AdditionScoreControl asc;
 
+	public tk2dSprite startInstruction;
+
 
 	// Use this for initialization
 	void Awake () {
@@ -70,4 +72,22 @@ public class AdditionDifficultyControl : MonoBehaviour {
 		}
 	}
 
+	void Start(){
+
+		//Set sprite
+		switch(CurrentDifficulty){// H=0, M=2, E=1
+		case difficulty.easy:
+			startInstruction.spriteId = 1;
+			break;
+		case difficulty.normal:
+			startInstruction.spriteId = 2;
+			break;
+		case difficulty.hard:
+			startInstruction.spriteId = 0;
+			break;
+		default:
+			Debug.LogWarning ("Unable to set startInstruction");
+			break;
+		}
+	}
 }
