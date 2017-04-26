@@ -92,7 +92,7 @@ public class MainGameScript : MonoBehaviour
 			{
 				foreach(MoleScript mole in moles)
 				{
-					if(mole.IsActivate && mole.ColliderTransform == hit.transform)
+					if(mole.IsActivate && !mole.Whacked && mole.ColliderTransform == hit.transform)
 					{
 						if (!SettingsScript.IsSFXMute)
 							AudioSource.PlayClipAtPoint (moleHit, new Vector3 (), 1f);
