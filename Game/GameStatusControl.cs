@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameStatusControl : MonoBehaviour {
 
 	private MainGameScript mainGame;
+    private chooseMode choosemode;
 	private static bool isPaused;
 
 	bool playOnce = true;
@@ -77,8 +78,10 @@ public class GameStatusControl : MonoBehaviour {
 
 
 	void GameOverFunc(){
-		FinalScore.text = "Score: " + ScoreScript.Score;
-		if (SettingsScript.IsBGMMute)
+		//ji3y945k4ux38 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!4789g47sdg89s4789gsd47g89*****************
+        FinalScore.text = "Score: " + ScoreScript.Score;
+		
+        if (SettingsScript.IsBGMMute)
 			AudioSource.PlayClipAtPoint (endSound, new Vector3 (), 0f);
 		else
 			AudioSource.PlayClipAtPoint (endSound, new Vector3 (), 1f);
@@ -100,7 +103,14 @@ public class GameStatusControl : MonoBehaviour {
 	// Pause Menu Function
 	void ReturnButtonPress(){
 //		Debug.Log ("ReturnButton Pressed. Return to menu");
-		UnityEngine.SceneManagement.SceneManager.LoadScene ("Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
+        UnityEngine.SceneManagement.SceneManager.LoadScene ("Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
+        //weeirrrd
+        /*choosemode = gameObject.GetComponent<chooseMode>();
+        choosemode .startMenu.gameObject.SetActive(false);
+        choosemode.planet.gameObject.SetActive(true);
+        choosemode.arrow.gameObject.SetActive(true);*/
+       
+        PlayerPrefs.SetInt("ScoreScript.Score", ScoreScript.Score);
 	}
 
 	void ChangePictureWhenPress(tk2dUIItem who){
