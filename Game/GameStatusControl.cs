@@ -87,6 +87,11 @@ public class GameStatusControl : MonoBehaviour {
 //		returnButton.gameObject.SetActive (true);
 		chooseMode.setDifficulty=0;
 
+        //Add score to database
+        ScoreBoard.myList.Add(ScoreScript.Score);
+        ScoreBoard.SortList();
+        print(ScoreScript.Score);
+
 		// Show fade times
 		print("Fade Times:"+gameObject.GetComponent<ScoreControlAbstract>().FadeCount);
 	}

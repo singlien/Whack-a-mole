@@ -54,6 +54,7 @@ public class DivisionDifficultyControl : MonoBehaviour {
 			dsc.highIndexMinMax = new Vector2 (0f, 3f);
 			break;
 		}
+        chooseMode.IsGameLoaded = true;
 
 	}
 

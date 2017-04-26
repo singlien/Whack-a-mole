@@ -37,7 +37,15 @@ public class chooseMode : MonoBehaviour {
         }
     }
   
+    private string PlayerSaveFileName = "inputText";
 
+    public string getPlayerSaveFileName
+    {
+        get
+        {
+            return PlayerSaveFileName;
+        }
+    }
 
 	float time;
 	int count;
@@ -52,15 +60,17 @@ public class chooseMode : MonoBehaviour {
 			maps.GetChild (i).gameObject.SetActive (false);
 		}
 
-        if (!isGameLoaded)
+        if (!isGameLoaded)//遊戲開啟，進入tapToStart畫面
         {
             planet.gameObject.SetActive(false);
             startMenu.gameObject.SetActive(true);
             maps.gameObject.SetActive(true);
             arrow.gameObject.SetActive(false);
+            if (PlayerPrefs.HasKey("isFirstTime"))// Not first time to excute the game
+                GetPlayerName();
             //print(isGameLoaded);
         }
-        else
+        else//玩完遊戲回到MENU
         {
             arrow.gameObject.SetActive(true);
             planet.gameObject.SetActive(true);
@@ -187,12 +197,7 @@ public class chooseMode : MonoBehaviour {
             planet.gameObject.SetActive(true);
             arrow.gameObject.SetActive(true);
 
-            AdditiontextMesh.text = PlayerPrefs.GetString("inputfield.text",inputfield.text);
-            AdditiontextMesh.Commit();
-            SubtrationtextMesh.text = PlayerPrefs.GetString("inputfield.text",inputfield.text);
-            SubtrationtextMesh.Commit();
-            DivisiontextMesh.text = PlayerPrefs.GetString("inputfield.text",inputfield.text);
-            DivisiontextMesh.Commit();
+            GetPlayerName();
         }
 	}
     void YesButtonPressed()
@@ -203,11 +208,11 @@ public class chooseMode : MonoBehaviour {
         if (inputfield.text != null)
         { 
             AdditiontextMesh.text = inputfield.text;
-            PlayerPrefs.SetString("inputfield.text", inputfield.text);
+            PlayerPrefs.SetString(PlayerSaveFileName, inputfield.text);
+            PlayerPrefs.Save();
             print(inputfield.text);
-            AdditiontextMesh.Commit();
         }else   //inputfield.text==null
-            return;
+            return; //=結束函數
 
         UserNameInput.gameObject.SetActive(false);
         planet.gameObject.SetActive(true);
@@ -215,17 +220,20 @@ public class chooseMode : MonoBehaviour {
 
         canvas.gameObject.SetActive(false);
 
-        SubtrationtextMesh.text = PlayerPrefs.GetString("inputfield.text",inputfield.text);
-        //SubtrationtextMesh.Commit();
-        DivisiontextMesh.text = PlayerPrefs.GetString("inputfield.text",inputfield.text);
-        //DivisiontextMesh.Commit();
+        SubtrationtextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
+        DivisiontextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
     }
 
     void GetPlayerName()
     {
-        AdditiontextMesh.text = PlayerPrefs.GetString("inputfield.text",inputfield.text);
-        SubtrationtextMesh.text = PlayerPrefs.GetString("inputfield.text",inputfield.text);
-        DivisiontextMesh.text = PlayerPrefs.GetString("inputfield.text",inputfield.text);
+        if (PlayerPrefs.HasKey(PlayerSaveFileName))
+        {
+            AdditiontextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
+            SubtrationtextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
+            DivisiontextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
+        }
+        else
+            Debug.LogError("Unable to load saved data!");
     }
 
     void NoButtonPressed()
