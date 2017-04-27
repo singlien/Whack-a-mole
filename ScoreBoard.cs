@@ -7,7 +7,7 @@ public class ScoreBoard : MonoBehaviour {
     public static List<int> myList = new List<int>();   //暫存分數的清單
 
     public GameObject PlayerScoreListPrefab;
-    public GameObject go;
+    private GameObject go;
     int num = 1;
 
     private chooseMode cm;

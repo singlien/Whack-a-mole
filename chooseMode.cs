@@ -13,6 +13,10 @@ public class chooseMode : MonoBehaviour {
 	public Transform startMenu;
     public Transform UserNameInput;
     public Transform Ranking;
+    public Transform PopChangeHeadPad;
+    public Transform changeHead1;
+    public Transform changeHead2;
+    public Transform head;
     public Canvas canvas;
     public Canvas RankCanvas;
     public tk2dTextMesh AdditiontextMesh;
@@ -50,6 +54,16 @@ public class chooseMode : MonoBehaviour {
 	float time;
 	int count;
 	public float exitTime = 1;
+
+//	void Awake(){
+//		//關聯每一地圖上的物件
+//		maps = GameObject.Find("MapChoice").transform;
+//		planet = GameObject.Find("PlanetChoice").transform;
+//		arrow = GameObject.Find("Arrow").transform;
+//		startMenu = GameObject.Find("MenuSprite").transform;
+//
+//	}
+
 
    
     void Start () {
@@ -182,10 +196,11 @@ public class chooseMode : MonoBehaviour {
 
 	void TapToStartPressed(){
 		startMenu.gameObject.SetActive (false);
-        //UserNmaeInput.gameObject.SetActive(true);
-       // canvas.gameObject.SetActive(true);
+        // UserNmaeInput.gameObject.SetActive(true);
+        // canvas.gameObject.SetActive(true);
 
-       if(!PlayerPrefs.HasKey("isFirstTime") || PlayerPrefs.GetInt("isFirstTime") != 1) //to check if it's our first time to load game
+		//to check if it's our first time to load game
+		if(!PlayerPrefs.HasKey("isFirstTime") || PlayerPrefs.GetInt("isFirstTime") != 1) //第一次開啟遊戲
         {   //換成apk時要測試
             UserNameInput.gameObject.SetActive(true);
             canvas.gameObject.SetActive(true);
@@ -200,7 +215,7 @@ public class chooseMode : MonoBehaviour {
             GetPlayerName();
         }
 	}
-    void YesButtonPressed()
+    void YesButtonPressed()//輸入名字的inputField
     {  
         
         inputfield = GameObject.Find("InputField").GetComponent<InputField>();
@@ -212,16 +227,20 @@ public class chooseMode : MonoBehaviour {
             PlayerPrefs.Save();
             print(inputfield.text);
         }else   //inputfield.text==null
-            return; //=結束函數
+            return; //結束函數
 
         UserNameInput.gameObject.SetActive(false);
         planet.gameObject.SetActive(true);
         arrow.gameObject.SetActive(true);
 
-        canvas.gameObject.SetActive(false);
+        inputfield.enabled = false;
+        //canvas.gameObject.SetActive(false);
 
         SubtrationtextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
         DivisiontextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
+
+		//載入影片
+		SceneManager.LoadScene ("StartAnimation", LoadSceneMode.Single);
     }
 
     void GetPlayerName()
@@ -279,5 +298,27 @@ public class chooseMode : MonoBehaviour {
         Ranking.gameObject.SetActive(false);
         RankCanvas.gameObject.SetActive(false);
     }
-		
+    void HeadPressed()
+    {
+        PopChangeHeadPad.gameObject.SetActive(true);
+
+
+    }
+    void ChangeHead()
+    {       //如果小丸子的check圖沒有被active
+        if (changeHead1.gameObject.activeInHierarchy == false)
+        {
+            changeHead1.gameObject.SetActive(true);
+            changeHead2.gameObject.SetActive(false);
+            head.gameObject.SetActive(true);
+        }
+        else
+        {
+            changeHead1.gameObject.SetActive(false);
+            changeHead2.gameObject.SetActive(true);
+            head.gameObject.SetActive(false);
+        }
+    }
+   
+   
 }
