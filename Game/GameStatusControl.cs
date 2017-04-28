@@ -17,6 +17,7 @@ public class GameStatusControl : MonoBehaviour {
 
 //	public Button returnButton;
 //	public Image gameOverImg;
+	public GameObject pauseButton;
 	public GameObject pauseMenu;
 	public GameObject StartInstruction;
 	public tk2dTextMesh FinalScore;
@@ -34,8 +35,9 @@ public class GameStatusControl : MonoBehaviour {
 		if (mainGame == null) {
 			Debug.LogError ("Unable to load MainGameScript");
 		}
-
+			
 		pauseMenu.SetActive (false);
+		pauseButton.SetActive (false);
 		gameOverScreen.gameObject.SetActive (false);
 		StartInstruction.SetActive (true);
 
@@ -99,6 +101,7 @@ public class GameStatusControl : MonoBehaviour {
 	// Start Instruction Function
 	void OnGameStart(){
 		StartInstruction.SetActive (false);
+		pauseButton.SetActive (true);
 		OnResume ();
 	}
 
