@@ -28,13 +28,16 @@ public class Flashing : MonoBehaviour {
 		}
 	}
 
-//	void OnMouseEnter(){
-//		isMouseOver = true;		
-//		child.SetActive (true);
-//
-//	}
-//	void OnMouseExit(){
-//		isMouseOver = false;
-//	}
+	//因為UNITY_ANDROID觸屏會永遠感應到滑鼠
+	#if UNITY_EDITOR
+	void OnMouseEnter(){
+		isMouseOver = true;		
+		child.SetActive (true);
+
+	}
+	void OnMouseExit(){
+		isMouseOver = false;
+	}
+	#endif
 		
 }

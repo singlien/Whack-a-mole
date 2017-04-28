@@ -7,8 +7,7 @@ public class ScoreBoard : MonoBehaviour {
     public static List<int> myList = new List<int>();   //暫存分數的清單
 
     public GameObject PlayerScoreListPrefab;
-    private GameObject go;
-    int num = 1;
+	private GameObject instGameObj;	//分數物件生成的
 
     private chooseMode cm;
 
@@ -29,20 +28,17 @@ public class ScoreBoard : MonoBehaviour {
                 myList.Add(0);
             }
 
-            for (int i = 0; i < 8; i++)
-            {
-                go = (GameObject)Instantiate(PlayerScoreListPrefab);
-                //SetParent(transform,false) the false can moderate the prefab scale instantiate on UI
-                go.transform.SetParent(transform,false);
-                go.transform.Find("RankText").GetComponent<Text>().text = "No."+ num;
+			for (int i = 0; i < 8; i++)
+			{
+				instGameObj = (GameObject)Instantiate (PlayerScoreListPrefab);
+				//SetParent(transform,false) the false can moderate the prefab scale instantiate on UI
+				instGameObj.transform.SetParent (transform, false);
+				instGameObj.transform.Find ("RankText").GetComponent<Text> ().text = "No." + (i+1);
 
-                go.transform.Find("NameText").GetComponent<Text>().text = PlayerPrefs.GetString(cm.getPlayerSaveFileName);
-                go.transform.Find("ScoreText").GetComponent<Text>().text = myList[i].ToString();
-                //print(PlayerPrefs.GetInt("ScoreScript.Score").ToString());
-                
-
-                num++;
-            }
+				instGameObj.transform.Find ("NameText").GetComponent<Text> ().text = PlayerPrefs.GetString (cm.getPlayerSaveFileName);
+				instGameObj.transform.Find ("ScoreText").GetComponent<Text> ().text = myList [i].ToString ();
+				//print(PlayerPrefs.GetInt("ScoreScript.Score").ToString());
+   			}
            
         }
     }
@@ -61,7 +57,11 @@ public class ScoreBoard : MonoBehaviour {
         if (myList.Count > 0){
             for (int i = 0; i < 8; i++)
             {
-                PlayerPrefs.SetInt(PlayerScoreSavedFileName + i, myList[i]);
+				try{
+					PlayerPrefs.SetInt(PlayerScoreSavedFileName + i, myList[i]);
+				}catch{
+					PlayerPrefs.SetInt(PlayerScoreSavedFileName + i, 0);
+				}
             }
         }
     }

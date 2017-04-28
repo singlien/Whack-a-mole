@@ -4,9 +4,9 @@ using System.Collections;
 public class ScoreScript : MonoBehaviour
 {
 
-	static private int score;
-	static private int currentPoint = 0;
-	static private int hitPoint;
+	static private int score;					//遊戲分數
+	static private int currentPoint = 0;		//目前點數
+	static private int hitPoint;				//打到的怪物點數
 
 	static public int Score
 	{

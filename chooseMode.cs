@@ -17,13 +17,16 @@ public class chooseMode : MonoBehaviour {
     public Transform changeHead1;
     public Transform changeHead2;
     public Transform head;
-    public Canvas canvas;
-    public Canvas RankCanvas;
+	public Transform inputField;
+	public Transform rank;
+
+//    public Canvas canvas;
+//    public Canvas RankCanvas;
     public tk2dTextMesh AdditiontextMesh;
     public tk2dTextMesh SubtrationtextMesh;
     public tk2dTextMesh DivisiontextMesh;
 	//為方便直接用scene執行設3, 要記得改回0!!!
-	public static int setDifficulty=3;	// 1=Hard, 2=Mid, 3=Easy
+	public static int setDifficulty = 3;	// 1=Hard, 2=Mid, 3=Easy
 
 	private int currentIndex;
 
@@ -80,6 +83,14 @@ public class chooseMode : MonoBehaviour {
             startMenu.gameObject.SetActive(true);
             maps.gameObject.SetActive(true);
             arrow.gameObject.SetActive(false);
+
+			Ranking.gameObject.SetActive (false);
+			UserNameInput.gameObject.SetActive (false);
+
+			//Canvus
+			rank.gameObject.SetActive (false);
+			inputField.gameObject.SetActive (false);
+
             if (PlayerPrefs.HasKey("isFirstTime"))// Not first time to excute the game
                 GetPlayerName();
             //print(isGameLoaded);
@@ -196,38 +207,42 @@ public class chooseMode : MonoBehaviour {
 
 	void TapToStartPressed(){
 		startMenu.gameObject.SetActive (false);
-        // UserNmaeInput.gameObject.SetActive(true);
-        // canvas.gameObject.SetActive(true);
 
-		//to check if it's our first time to load game
-		if(!PlayerPrefs.HasKey("isFirstTime") || PlayerPrefs.GetInt("isFirstTime") != 1) //第一次開啟遊戲
-        {   //換成apk時要測試
-            UserNameInput.gameObject.SetActive(true);
-            canvas.gameObject.SetActive(true);
-            PlayerPrefs.SetInt("isFirstTime", 1);
-            PlayerPrefs.Save();
-        }
+		// To check if it's our first time to load game
+		if (!PlayerPrefs.HasKey ("isFirstTime") || PlayerPrefs.GetInt ("isFirstTime") != 1) { //第一次開啟遊戲//換成apk時要測試
+			UserNameInput.gameObject.SetActive (true);
+			inputField.gameObject.SetActive (true);
+			PlayerPrefs.SetInt ("isFirstTime", 1);
+		}
         else
-        {
+        {	//直接進入planet選單
             planet.gameObject.SetActive(true);
             arrow.gameObject.SetActive(true);
-
+			
             GetPlayerName();
         }
 	}
+
+	//
+	// Name Input Field
+	//
     void YesButtonPressed()//輸入名字的inputField
     {  
         
         inputfield = GameObject.Find("InputField").GetComponent<InputField>();
        
-        if (inputfield.text != null)
-        { 
-            AdditiontextMesh.text = inputfield.text;
-            PlayerPrefs.SetString(PlayerSaveFileName, inputfield.text);
-            PlayerPrefs.Save();
-            print(inputfield.text);
-        }else   //inputfield.text==null
-            return; //結束函數
+		if (inputfield.text != "" && inputfield != null) 
+		{ 
+			AdditiontextMesh.text = inputfield.text;
+			PlayerPrefs.SetString (PlayerSaveFileName, inputfield.text);
+			PlayerPrefs.Save ();
+			print (inputfield.text);
+		} else   //inputfield.text==""
+		{
+			return; //結束函數
+			print("End of function");
+		}
+			
 
         UserNameInput.gameObject.SetActive(false);
         planet.gameObject.SetActive(true);
@@ -259,8 +274,11 @@ public class chooseMode : MonoBehaviour {
     {
         startMenu.gameObject.SetActive (true);
         UserNameInput.gameObject.SetActive(false);
-        canvas.gameObject.SetActive(false);
+		inputField.gameObject.SetActive(false);
+		PlayerPrefs.DeleteKey("isFirstTime");
+
     }
+	// Return to planet choose
 	void ReturnButtonPressed(){
 		maps.GetChild (currentIndex).gameObject.SetActive (false);
 		planet.gameObject.SetActive (true);
@@ -284,19 +302,23 @@ public class chooseMode : MonoBehaviour {
 		maps.gameObject.SetActive (true);
 		arrow.gameObject.SetActive (false);
 	}
+
+	//
+	// Ranking
+	//
     void RankPressed()
     {
         planet.gameObject.SetActive(false);
         arrow.gameObject.SetActive(false);
         Ranking.gameObject.SetActive(true);
-        RankCanvas.gameObject.SetActive(true);
+		rank.gameObject.SetActive(true);
     }
     void OKButtonPressed()
     {
         planet.gameObject.SetActive(true);
         arrow.gameObject.SetActive(true);
         Ranking.gameObject.SetActive(false);
-        RankCanvas.gameObject.SetActive(false);
+		rank.gameObject.SetActive(false);
     }
     void HeadPressed()
     {

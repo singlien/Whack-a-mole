@@ -28,6 +28,8 @@ public class GameStatusControl : MonoBehaviour {
 	public float exitTime = 1f;
 	int count;
 
+	private int weightedScore = 0;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -79,7 +81,8 @@ public class GameStatusControl : MonoBehaviour {
 
 
 	void GameOverFunc(){
-		FinalScore.text = "Score: " + ScoreScript.Score;
+		weightedScore = ScoreWeight ();
+		FinalScore.text = "Score: " + weightedScore;
 		if (SettingsScript.IsBGMMute)
 			AudioSource.PlayClipAtPoint (endSound, new Vector3 (), 0f);
 		else
@@ -89,25 +92,46 @@ public class GameStatusControl : MonoBehaviour {
 //		returnButton.gameObject.SetActive (true);
 		chooseMode.setDifficulty=0;
 
-        //Add score to database
-        ScoreBoard.myList.Add(ScoreScript.Score);
-        ScoreBoard.SortList();
-        print(ScoreScript.Score);
-
 		// Show fade times
 		print("Fade Times:"+gameObject.GetComponent<ScoreControlAbstract>().FadeCount);
 	}
 
+	int ScoreWeight(){
+		switch (chooseMode.setDifficulty) {
+		case 1:	//Hard
+			return ScoreScript.Score * 10;
+		case 2: //Medium
+			return ScoreScript.Score * 5;
+		case 3: //Easy
+			return ScoreScript.Score * 1;
+		default:
+			Debug.LogError ("無法加權分數");
+			return 0;
+		}
+	}
+
+	//
 	// Start Instruction Function
+	//
 	void OnGameStart(){
 		StartInstruction.SetActive (false);
 		pauseButton.SetActive (true);
 		OnResume ();
 	}
 
-	// Pause Menu Function
+	//
+	// End Game: Return to menu
+	//
 	void ReturnButtonPress(){
 //		Debug.Log ("ReturnButton Pressed. Return to menu");
+
+		// Add score to database
+		ScoreBoard.myList.Add(weightedScore);
+		ScoreBoard.SortList();
+		LevelControl.AddExperience (weightedScore);
+		print("WeightedScore: " + weightedScore);
+
+		// Load menu
 		UnityEngine.SceneManagement.SceneManager.LoadScene ("Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
 	}
 
@@ -117,6 +141,9 @@ public class GameStatusControl : MonoBehaviour {
 		who.gameObject.GetComponentInChildren<tk2dTextMesh> ().text = "";
 	}
 
+	//
+	// Pause Menu Function
+	//
 	void OnPause(){
 //		print ("Game Paused");
 		Time.timeScale = 0;

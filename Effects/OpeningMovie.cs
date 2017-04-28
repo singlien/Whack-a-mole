@@ -15,6 +15,10 @@ public class OpeningMovie : MonoBehaviour {
 
 	void Start()
 	{
+		// Set RawImage size
+
+
+
 		#if UNITY_EDITOR
 		//Get source
 		GetComponent<RawImage>().texture = movieTexture;
@@ -27,8 +31,11 @@ public class OpeningMovie : MonoBehaviour {
 		#endif
 
 		#if UNITY_ANDROID
+		Screen.orientation = ScreenOrientation.LandscapeLeft;
+
 		Handheld.PlayFullScreenMovie (movieTexture.name+".mov", Color.black, 
 			FullScreenMovieControlMode.Hidden,FullScreenMovieScalingMode.AspectFit);
+		
 		#endif
 
 		//When load menu will enter PlanetChoice directly
@@ -54,6 +61,7 @@ public class OpeningMovie : MonoBehaviour {
 	IEnumerator LoadScene()
 	{
 		yield return new WaitForSeconds(movieTexture.duration);//括號內填入影片時間
+		Screen.orientation = ScreenOrientation.Portrait;
 		UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");//載入場景
 	}
 
