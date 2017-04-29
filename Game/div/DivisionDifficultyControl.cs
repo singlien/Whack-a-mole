@@ -9,6 +9,7 @@ public class DivisionDifficultyControl : MonoBehaviour {
 	}
 
 	public difficulty CurrentDifficulty;
+	public tk2dSprite startInstruction;
 
 	DivisionScoreControl dsc;
 	// Use this for initialization
@@ -57,5 +58,24 @@ public class DivisionDifficultyControl : MonoBehaviour {
         chooseMode.IsGameLoaded = true;
 
 	}
+	void Start(){
 
+		//Set sprite
+		switch(CurrentDifficulty){// H=7, M=8, E=6
+		case difficulty.easy:
+			startInstruction.spriteId = 6;
+			break;
+		case difficulty.normal:
+			startInstruction.spriteId = 8;
+			break;
+		case difficulty.hard:
+			startInstruction.spriteId = 7;
+			break;
+		default:
+			Debug.LogWarning ("Unable to set startInstruction");
+			break;
+		}
+		chooseMode.IsGameLoaded = true;
+
+	}
 }
