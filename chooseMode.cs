@@ -52,20 +52,13 @@ public class chooseMode : MonoBehaviour {
 	private int currentActivePortrait;
 	Transform chp;
 
-//	void Awake(){
-//		//關聯每一地圖上的物件
-//		maps = GameObject.Find("MapChoice").transform;
-//		planet = GameObject.Find("PlanetChoice").transform;
-//		arrow = GameObject.Find("Arrow").transform;
-//		startMenu = GameObject.Find("MenuSprite").transform;
-//
-//	}
-
-
-   
+	 
     void Start () {
 		currentIndex = planet.GetComponent<SwipeControl> ().CurrentChoice;
+
 		chp = nameSprite.FindChild ("ChangeHeadPad");
+		if (chp == null)
+			Debug.LogError ("Unable to load ChangeHeadPad");
 		//先把地圖每一個物件關掉
 		for (int i = 0; i < maps.childCount; i++) {
 			maps.GetChild (i).gameObject.SetActive (false);
@@ -78,7 +71,6 @@ public class chooseMode : MonoBehaviour {
             maps.gameObject.SetActive(true);
             arrow.gameObject.SetActive(false);
 			nameSprite.gameObject.SetActive (false);
-
 			Ranking.gameObject.SetActive (false);
 			UserNameInput.gameObject.SetActive (false);
 
@@ -229,7 +221,7 @@ public class chooseMode : MonoBehaviour {
 		{ 
 			nameSprite.GetComponentInChildren<tk2dTextMesh> ().text = inputfield.text;	//設定頭像名字
 			PlayerPrefs.SetString (PlayerSaveFileName, inputfield.text);				//名字存檔
-			print (inputfield.text);	//Debug
+//			print (inputfield.text);	//Debug
 		} else   //未輸入名字
 		{
 			return; //結束函數
@@ -296,20 +288,54 @@ public class chooseMode : MonoBehaviour {
 	//
 	// Ranking
 	//
-    void RankPressed()
+	void RankPressed(tk2dUIItem pressed)
     {
-        planet.gameObject.SetActive(false);
-        arrow.gameObject.SetActive(false);
-        Ranking.gameObject.SetActive(true);
-		rank.gameObject.SetActive(true);
+        planet.gameObject.SetActive (false);
+        arrow.gameObject.SetActive (false);
+		nameSprite.gameObject.SetActive (false);
+		Ranking.gameObject.SetActive (true);
+
+		switch(pressed.name){
+		case "RankSpriteAdd": 
+			// Call Add Ranking
+			rank.gameObject.SetActive (true);
+			Ranking.FindChild ("RankingSpriteAdd").gameObject.SetActive (true);
+			rank.gameObject.GetComponent<RankControl> ().LoadScore ("Add");
+			break;
+		case "RankSpriteSub":
+			// Call Sub Ranking
+			rank.gameObject.SetActive (true);
+			Ranking.FindChild("RankingSpriteSub").gameObject.SetActive(true);
+			rank.gameObject.GetComponent<RankControl> ().LoadScore ("Sub");
+			break;
+		case "RankSpriteDiv":
+			// Call Div Ranking
+			rank.gameObject.SetActive (true);
+			Ranking.FindChild("RankingSpriteDiv").gameObject.SetActive(true);
+			rank.gameObject.GetComponent<RankControl> ().LoadScore ("Div");
+			break;
+		default:
+			//Debug, suppose no excute
+			print (pressed.name);
+			Debug.LogError ("Unable locate Ranking pressed");
+			break;
+		}
     }
     void OKButtonPressed()
     {
-        planet.gameObject.SetActive(true);
-        arrow.gameObject.SetActive(true);
-        Ranking.gameObject.SetActive(false);
-		rank.gameObject.SetActive(false);
+		planet.gameObject.SetActive (true);
+		arrow.gameObject.SetActive (true);
+		nameSprite.gameObject.SetActive (true);
+        Ranking.gameObject.SetActive (false);
+		for(int i=0;i<Ranking.childCount;i++){	//turnoff all ranking child
+			Ranking.GetChild (i).gameObject.SetActive (false);
+		}
+		rank.gameObject.SetActive (false);
     }
+
+	//
+	// Portrait
+	//
     void HeadPressed()
     {
 		nameSprite.FindChild ("ChangeHeadPad").gameObject.SetActive (true);

@@ -29,6 +29,7 @@ public class GameStatusControl : MonoBehaviour {
 	int count;
 
 	private int weightedScore = 0;
+	private string GameType;
 
 	// Use this for initialization
 	void Start () {
@@ -126,10 +127,13 @@ public class GameStatusControl : MonoBehaviour {
 //		Debug.Log ("ReturnButton Pressed. Return to menu");
 
 		// Add score to database
-		ScoreBoard.myList.Add(weightedScore);
-		ScoreBoard.SortList();
-		LevelControl.AddExperience (weightedScore);
-		print("WeightedScore: " + weightedScore);
+		GameType = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;		// Determin GameType
+		ScoreBoard.Add(weightedScore, GameType);
+		LevelControl.AddExperience (weightedScore, GameType);
+		GameType = null;
+
+
+//		print("WeightedScore: " + weightedScore);
 
 		// Load menu
 		UnityEngine.SceneManagement.SceneManager.LoadScene ("Menu", UnityEngine.SceneManagement.LoadSceneMode.Single);
