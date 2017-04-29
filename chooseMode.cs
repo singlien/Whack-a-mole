@@ -13,18 +13,10 @@ public class chooseMode : MonoBehaviour {
 	public Transform startMenu;
     public Transform UserNameInput;
     public Transform Ranking;
-    public Transform PopChangeHeadPad;
-    public Transform changeHead1;
-    public Transform changeHead2;
-    public Transform head;
+	public Transform nameSprite;
 	public Transform inputField;
 	public Transform rank;
 
-//    public Canvas canvas;
-//    public Canvas RankCanvas;
-    public tk2dTextMesh AdditiontextMesh;
-    public tk2dTextMesh SubtrationtextMesh;
-    public tk2dTextMesh DivisiontextMesh;
 	//為方便直接用scene執行設3, 要記得改回0!!!
 	public static int setDifficulty = 3;	// 1=Hard, 2=Mid, 3=Easy
 
@@ -57,6 +49,8 @@ public class chooseMode : MonoBehaviour {
 	float time;
 	int count;
 	public float exitTime = 1;
+	private int currentActivePortrait;
+	Transform chp;
 
 //	void Awake(){
 //		//關聯每一地圖上的物件
@@ -71,7 +65,7 @@ public class chooseMode : MonoBehaviour {
    
     void Start () {
 		currentIndex = planet.GetComponent<SwipeControl> ().CurrentChoice;
-
+		chp = nameSprite.FindChild ("ChangeHeadPad");
 		//先把地圖每一個物件關掉
 		for (int i = 0; i < maps.childCount; i++) {
 			maps.GetChild (i).gameObject.SetActive (false);
@@ -83,6 +77,7 @@ public class chooseMode : MonoBehaviour {
             startMenu.gameObject.SetActive(true);
             maps.gameObject.SetActive(true);
             arrow.gameObject.SetActive(false);
+			nameSprite.gameObject.SetActive (false);
 
 			Ranking.gameObject.SetActive (false);
 			UserNameInput.gameObject.SetActive (false);
@@ -97,9 +92,7 @@ public class chooseMode : MonoBehaviour {
         }
         else//玩完遊戲回到MENU
         {
-            arrow.gameObject.SetActive(true);
-            planet.gameObject.SetActive(true);
-            GetPlayerName();
+			TapToStartPressed ();
             //print(isGameLoaded);
         }
     }
@@ -218,6 +211,7 @@ public class chooseMode : MonoBehaviour {
         {	//直接進入planet選單
             planet.gameObject.SetActive(true);
             arrow.gameObject.SetActive(true);
+			nameSprite.gameObject.SetActive (true);
 			
             GetPlayerName();
         }
@@ -233,14 +227,13 @@ public class chooseMode : MonoBehaviour {
        
 		if (inputfield.text != "" && inputfield != null) 
 		{ 
-			AdditiontextMesh.text = inputfield.text;
-			PlayerPrefs.SetString (PlayerSaveFileName, inputfield.text);
-			PlayerPrefs.Save ();
-			print (inputfield.text);
-		} else   //inputfield.text==""
+			nameSprite.GetComponentInChildren<tk2dTextMesh> ().text = inputfield.text;	//設定頭像名字
+			PlayerPrefs.SetString (PlayerSaveFileName, inputfield.text);				//名字存檔
+			print (inputfield.text);	//Debug
+		} else   //未輸入名字
 		{
 			return; //結束函數
-			print("End of function");
+			print("End of function");	//Debug, suppose no reach
 		}
 			
 
@@ -251,8 +244,8 @@ public class chooseMode : MonoBehaviour {
         inputfield.enabled = false;
         //canvas.gameObject.SetActive(false);
 
-        SubtrationtextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
-        DivisiontextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
+//        SubtrationtextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
+//        DivisiontextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
 
 		//載入影片
 		SceneManager.LoadScene ("StartAnimation", LoadSceneMode.Single);
@@ -262,9 +255,7 @@ public class chooseMode : MonoBehaviour {
     {
         if (PlayerPrefs.HasKey(PlayerSaveFileName))
         {
-            AdditiontextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
-            SubtrationtextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
-            DivisiontextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
+			nameSprite.GetComponentInChildren<tk2dTextMesh> ().text = PlayerPrefs.GetString(PlayerSaveFileName);	//設定頭像名字
         }
         else
             Debug.LogError("Unable to load saved data!");
@@ -276,7 +267,6 @@ public class chooseMode : MonoBehaviour {
         UserNameInput.gameObject.SetActive(false);
 		inputField.gameObject.SetActive(false);
 		PlayerPrefs.DeleteKey("isFirstTime");
-
     }
 	// Return to planet choose
 	void ReturnButtonPressed(){
@@ -322,25 +312,43 @@ public class chooseMode : MonoBehaviour {
     }
     void HeadPressed()
     {
-        PopChangeHeadPad.gameObject.SetActive(true);
-
-
+		nameSprite.FindChild ("ChangeHeadPad").gameObject.SetActive (true);
     }
-    void ChangeHead()
-    {       //如果小丸子的check圖沒有被active
-        if (changeHead1.gameObject.activeInHierarchy == false)
-        {
-            changeHead1.gameObject.SetActive(true);
-            changeHead2.gameObject.SetActive(false);
-            head.gameObject.SetActive(true);
-        }
-        else
-        {
-            changeHead1.gameObject.SetActive(false);
-            changeHead2.gameObject.SetActive(true);
-            head.gameObject.SetActive(false);
-        }
+    void ChangeHead(tk2dUIItem selected)
+    { 
+		//Deselect All Portrait
+		for (int i = 0; i < chp.childCount; i++) 
+		{
+			chp.GetChild (i).GetChild(0).gameObject.SetActive (false);
+		}
+
+		selected.gameObject.transform.GetChild (0).gameObject.SetActive (true);
+		getCurrentPortrait ();
+		SetPortrait ();
     }
-   
+
+	void SetPortrait()
+	{
+		if (currentActivePortrait == -1) {
+			Debug.LogError("Unable to set Portrait");
+			return;
+		}
+		nameSprite.FindChild ("Portrait").gameObject.GetComponent<tk2dSprite> ().spriteId = currentActivePortrait;
+		currentActivePortrait = -1;
+
+		// Close ChangeHeadPad
+		chp.gameObject.SetActive(false);
+	}
+
+	void getCurrentPortrait()
+	{
+		for (int i = 0; i < chp.childCount; i++) 
+		{
+			if(chp.GetChild(i).FindChild("isChecked").gameObject.activeSelf) //check is activated
+			{
+				currentActivePortrait = chp.GetChild (i).gameObject.GetComponent<tk2dSprite> ().spriteId;
+			}
+		}
+	}
    
 }

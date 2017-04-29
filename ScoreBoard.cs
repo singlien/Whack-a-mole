@@ -27,7 +27,9 @@ public class ScoreBoard : MonoBehaviour {
             {
                 myList.Add(0);
             }
-
+			// 清空排行榜
+			ClearLayout();
+			// 生成排行榜
 			for (int i = 0; i < 8; i++)
 			{
 				instGameObj = (GameObject)Instantiate (PlayerScoreListPrefab);
@@ -74,4 +76,10 @@ public class ScoreBoard : MonoBehaviour {
             myList.Add(PlayerPrefs.GetInt(PlayerScoreSavedFileName + i));
         }
     }
+
+	void ClearLayout(){
+		for (int i = 0; i < gameObject.transform.childCount; i++) {
+			Destroy (gameObject.transform.GetChild (i).gameObject);
+		}
+	}
 }
