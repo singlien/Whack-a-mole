@@ -53,7 +53,7 @@ public class LevelControl : MonoBehaviour {
 		}
 
 		//讀取玩家記錄
-		if (!PlayerPrefs.HasKey("isFirstTime") || chooseMode.IsGameLoaded)// First time to excute the game
+		if (!PlayerPrefs.HasKey("isFirstTime") || chooseMode.isGameLoaded)// First time to excute the game
 			Save();			
 		else
 			Load ();

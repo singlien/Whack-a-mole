@@ -39,7 +39,7 @@ public class OpeningMovie : MonoBehaviour {
 		#endif
 
 		//When load menu will enter PlanetChoice directly
-		chooseMode.IsGameLoaded = true;
+		chooseMode.isGameLoaded = true;
 	}
 
 

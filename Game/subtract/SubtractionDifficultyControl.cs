@@ -76,7 +76,7 @@ public class SubtractionDifficultyControl : MonoBehaviour {
 			Debug.LogWarning ("Unable to set startInstruction");
 			break;
 		}
-        chooseMode.IsGameLoaded = true;
+        chooseMode.isGameLoaded = true;
 
 	}
 }

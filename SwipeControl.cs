@@ -109,7 +109,7 @@ public class SwipeControl : MonoBehaviour {
 		}
 	}
 
-	void swipeAfter(){
+	public void swipeAfter(){
 		if (this.transform.GetChild (this.transform.childCount - 1).gameObject.activeSelf) {
 			Debug.Log ("已經到最頂邊了");
 			return; //在最後面，不動作
@@ -125,7 +125,7 @@ public class SwipeControl : MonoBehaviour {
 			}
 		}
 	}
-	void swipeBefore(){
+	public void swipeBefore(){
 		if (this.transform.GetChild (0).gameObject.activeSelf) {
 			Debug.Log ("已經到最底部了");
 			return;	//在最前面，不動作

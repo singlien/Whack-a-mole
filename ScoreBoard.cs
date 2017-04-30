@@ -22,7 +22,7 @@ public class ScoreBoard : MonoBehaviour {
 
 		//如果讀取前不存，會讀不到8筆
 		//如果讀取前存檔，當有資料會覆寫過去
-		if (!PlayerPrefs.HasKey("isFirstTime") || chooseMode.IsGameLoaded){// First time to excute the game
+		if (!PlayerPrefs.HasKey("isFirstTime") || chooseMode.isGameLoaded){// First time to excute the game
 			SaveScoreToSave();
 			LoadScoreFromSave();
 		}

@@ -128,6 +128,7 @@ public class GameStatusControl : MonoBehaviour {
 
 		// Add score to database
 		GameType = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;		// Determin GameType
+		chooseMode.setGameMode = GameType;
 		ScoreBoard.Add(weightedScore, GameType);
 		LevelControl.AddExperience (weightedScore, GameType);
 		GameType = null;

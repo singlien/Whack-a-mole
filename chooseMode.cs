@@ -19,22 +19,9 @@ public class chooseMode : MonoBehaviour {
 
 	//為方便直接用scene執行設3, 要記得改回0!!!
 	public static int setDifficulty = 3;	// 1=Hard, 2=Mid, 3=Easy
+	public static string setGameMode =  null;		// default=null
 
-	private int currentIndex;
-
-    private static bool isGameLoaded = false;
-
-    public static bool IsGameLoaded
-    {
-        get
-        {
-            return isGameLoaded;
-        }
-        set
-        {
-            isGameLoaded = value;
-        }
-    }
+	public static bool isGameLoaded = false;
   
     private string PlayerSaveFileName = "inputText";
 
@@ -45,14 +32,15 @@ public class chooseMode : MonoBehaviour {
             return PlayerSaveFileName;
         }
     }
-
+		
 	float time;
 	int count;
-	public float exitTime = 1;
-	private int currentActivePortrait;
 	Transform chp;
 
-	 
+	public float exitTime = 1;
+	private int currentActivePortrait;
+	private int currentIndex;
+		 
     void Start () {
 		currentIndex = planet.GetComponent<SwipeControl> ().CurrentChoice;
 
@@ -85,6 +73,7 @@ public class chooseMode : MonoBehaviour {
         else//玩完遊戲回到MENU
         {
 			TapToStartPressed ();
+			LastPlanetSelected ();
             //print(isGameLoaded);
         }
     }
@@ -207,6 +196,34 @@ public class chooseMode : MonoBehaviour {
 			
             GetPlayerName();
         }
+	}
+
+	void LastPlanetSelected(){
+
+		SwipeControl sc = GameObject.Find ("PlanetChoice").GetComponent<SwipeControl> ();
+		if (sc == null) {
+			Debug.LogError ("Unable to get script.");
+			return;
+		}
+
+		switch (setGameMode) {
+		case "Addition":
+			//預設就會到，不做事
+			break;
+		case "Division":
+			//上划兩個
+			sc.swipeAfter ();
+			sc.swipeAfter ();
+			break;
+		case "Subtraction":
+			//上划一個
+			sc.swipeAfter ();
+			break;
+		default:
+			Debug.LogError ("Unable to get last planet set.");
+			break;
+		}
+		setGameMode = null;
 	}
 
 	//

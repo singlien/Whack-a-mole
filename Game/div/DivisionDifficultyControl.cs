@@ -55,7 +55,7 @@ public class DivisionDifficultyControl : MonoBehaviour {
 			dsc.highIndexMinMax = new Vector2 (0f, 3f);
 			break;
 		}
-        chooseMode.IsGameLoaded = true;
+        chooseMode.isGameLoaded = true;
 
 	}
 	void Start(){
@@ -75,7 +75,7 @@ public class DivisionDifficultyControl : MonoBehaviour {
 			Debug.LogWarning ("Unable to set startInstruction");
 			break;
 		}
-		chooseMode.IsGameLoaded = true;
+		chooseMode.isGameLoaded = true;
 
 	}
 }
