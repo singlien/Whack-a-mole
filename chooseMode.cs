@@ -36,6 +36,7 @@ public class chooseMode : MonoBehaviour {
 	float time;
 	int count;
 	Transform chp;
+	bool inRanking = false;
 
 	public float exitTime = 1;
 	private int currentActivePortrait;
@@ -92,11 +93,13 @@ public class chooseMode : MonoBehaviour {
 				#endif
 			}
 			time = 0f;
-			if (!startMenu.gameObject.activeSelf) {
-				if (planet.gameObject.activeSelf)
-					ReturnToTaptoStartScreen ();
-				else
-					ReturnButtonPressed ();
+			if (!inRanking) {
+				if (!startMenu.gameObject.activeSelf) {
+					if (planet.gameObject.activeSelf)
+						ReturnToTaptoStartScreen ();
+					else
+						ReturnButtonPressed ();
+				}
 			}
 		}
 		if (time > exitTime)
@@ -220,7 +223,7 @@ public class chooseMode : MonoBehaviour {
 			sc.swipeAfter ();
 			break;
 		default:
-			Debug.LogError ("Unable to get last planet set.");
+			Debug.Log ("Unable to get last planet set.");
 			break;
 		}
 		setGameMode = null;
@@ -241,21 +244,15 @@ public class chooseMode : MonoBehaviour {
 //			print (inputfield.text);	//Debug
 		} else   //未輸入名字
 		{
+//			print("End of function");	//Debug
 			return; //結束函數
-			print("End of function");	//Debug, suppose no reach
-		}
-			
+		}			
 
         UserNameInput.gameObject.SetActive(false);
         planet.gameObject.SetActive(true);
         arrow.gameObject.SetActive(true);
 
         inputfield.enabled = false;
-        //canvas.gameObject.SetActive(false);
-
-//        SubtrationtextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
-//        DivisiontextMesh.text = PlayerPrefs.GetString(PlayerSaveFileName);
-
 		//載入影片
 		SceneManager.LoadScene ("StartAnimation", LoadSceneMode.Single);
     }
@@ -283,12 +280,14 @@ public class chooseMode : MonoBehaviour {
 		planet.gameObject.SetActive (true);
 //		print ("return button pressed, currentIndex=" + currentIndex);
 		arrow.gameObject.SetActive(true);
+		nameSprite.gameObject.SetActive (true);
 	}
 	// Return to Tap to start screen
 	void ReturnToTaptoStartScreen(){
 		startMenu.gameObject.SetActive (true);
 		planet.gameObject.SetActive (false);
 		arrow.gameObject.SetActive (false);
+		nameSprite.gameObject.SetActive (false);
 		for (int i = 0; i < maps.childCount; i++) {
 			maps.GetChild (i).gameObject.SetActive (false);
 		}
@@ -300,6 +299,7 @@ public class chooseMode : MonoBehaviour {
 		maps.GetChild (currentIndex).gameObject.SetActive (true);
 		maps.gameObject.SetActive (true);
 		arrow.gameObject.SetActive (false);
+		nameSprite.gameObject.SetActive (false);
 	}
 
 	//
@@ -311,7 +311,7 @@ public class chooseMode : MonoBehaviour {
         arrow.gameObject.SetActive (false);
 		nameSprite.gameObject.SetActive (false);
 		Ranking.gameObject.SetActive (true);
-
+		inRanking = true;
 		switch(pressed.name){
 		case "RankSpriteAdd": 
 			// Call Add Ranking
@@ -348,6 +348,7 @@ public class chooseMode : MonoBehaviour {
 			Ranking.GetChild (i).gameObject.SetActive (false);
 		}
 		rank.gameObject.SetActive (false);
+		inRanking = false;
     }
 
 	//
