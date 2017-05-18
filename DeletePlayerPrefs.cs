@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//
+// DEBUG ONLY
+//
 public class DeletePlayerPrefs : MonoBehaviour {
 
 	// Use this for initialization

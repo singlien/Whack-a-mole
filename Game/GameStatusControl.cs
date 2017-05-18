@@ -33,7 +33,10 @@ public class GameStatusControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		// DO NOT REMOVE THE CODE BELOW
+		Screen.orientation = ScreenOrientation.Portrait;
+		//
+
 		mainGame = gameObject.GetComponent<MainGameScript> ();
 		if (mainGame == null) {
 			Debug.LogError ("Unable to load MainGameScript");
@@ -57,7 +60,7 @@ public class GameStatusControl : MonoBehaviour {
 			playOnce = false;
 		}
 
-		if (Input.GetKeyDown (KeyCode.Escape)) {
+		if (Input.GetKeyDown (KeyCode.Escape) && pauseButton.activeSelf) {
 //			print ("Escape pressed");
 			OnPause ();
 		}

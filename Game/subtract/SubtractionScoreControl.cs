@@ -67,7 +67,7 @@ public class SubtractionScoreControl : ScoreControlAbstract {
 
 		}
 		//驗證是否超過目標數
-		if (targetPoint > ScoreScript.CurrentPoint ) {	//不為0 且 爆掉了
+		else if (targetPoint > ScoreScript.CurrentPoint ) {	//不為0 且 爆掉了
 			resetTarget (BanSwitch);
 			fade ();
 			MainGameScript.GameTimeChange(gameTimeDeduct);

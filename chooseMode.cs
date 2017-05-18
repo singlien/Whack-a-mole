@@ -43,6 +43,10 @@ public class chooseMode : MonoBehaviour {
 	private int currentIndex;
 		 
     void Start () {
+
+		// DO NOT REMOVE THE CODE BELOW
+		Screen.orientation = ScreenOrientation.Portrait;
+		//
 		currentIndex = planet.GetComponent<SwipeControl> ().CurrentChoice;
 
 		chp = nameSprite.FindChild ("ChangeHeadPad");
